@@ -34,7 +34,7 @@
 
             @csrf
             <div class="card">
-                <img src="{{ asset($room->image) }}" alt="{{ $room->nom }}">
+                <img src="{{ asset('images/' . $room->image) }}" alt="{{ $room->nom }}">
                 <div class="card-info">
                     <h3>{{ $room->nom }}</h3>
                     <p>{{ $room->description }}</p>
