@@ -1,0 +1,61 @@
+# تفعيل إعادة الكتابة
+RewriteEngine On
+
+# إعادة التوجيه من HTTP إلى HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# إعدادات لتحسين الأداء والأمان
+<IfModule mod_headers.c>
+    # تمكين التخزين المؤقت للمتصفح
+    <FilesMatch "\.(jpg|jpeg|png|gif|css|js|ico|webp|woff|woff2|ttf|svg)$">
+        Header set Cache-Control "max-age=604800, public"  # تخزين لمدة أسبوع
+    </FilesMatch>
+
+    # تفعيل X-Content-Type-Options لتجنب مشاكل أنواع المحتوى
+    Header set X-Content-Type-Options "nosniff"
+
+
+    # تفعيل X-Frame-Options لمنع التضمين
+    Header always append X-Frame-Options SAMEORIGIN
+
+
+    # تفعيل X-XSS-Protection لتجنب هجمات XSS
+
+    Header set X-XSS-Protection "1; mode=block"
+
+</IfModule>
+
+# منع الوصول إلى ملفات .env و .htaccess مباشرة
+<FilesMatch "(\.env|\.htaccess)">
+    Require all denied
+</FilesMatch>
+
+
+# منع الوصول إلى الملفات غير المرغوب فيها
+<FilesMatch "\.(bak|config|sql|swp|tmp)$">
+    Require all denied
+</FilesMatch>
+
+# إعادة توجيه إضافية للروابط
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# إعدادات إضافية لتحسين تجربة المستخدم
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 week"
+    ExpiresByType image/jpeg "access plus 1 week"
+    ExpiresByType image/png "access plus 1 week"
+    ExpiresByType image/gif "access plus 1 week"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+</IfModule>
+
+# تفعيل Gzip لتحسين سرعة التحميل
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
+</IfModule>
