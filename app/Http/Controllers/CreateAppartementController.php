@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Http\Controllers;
+شnamespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CreateAppartement;
@@ -36,8 +34,8 @@ class CreateAppartementController extends Controller
         // التعامل مع رفع الصورة
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path(), $imageName); // تخزين الصورة في مجلد public مباشرة
-            $validatedData['image'] = $imageName; // حفظ اسم الصورة فقط
+            $request->image->move(public_path('images'), $imageName); // تخزين الصورة في مجلد public/images
+            $validatedData['image'] = 'images/' . $imageName; // حفظ المسار الكامل للصورة
         }
 
         // ضبط القيمة الافتراضية لـ etoiles إذا لم يتم تقديمها
@@ -68,19 +66,25 @@ class CreateAppartementController extends Controller
             'nom' => 'required|string|max:255',
             'description' => 'required|string',
             'prix' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'etoiles' => 'nullable|integer|min:1|max:5',
             'extra_info' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // إضافة شرط الصورة
         ]);
 
         // البحث عن الغرفة باستخدام المعرف
         $appartement = CreateAppartement::findOrFail($id);
 
-        // التعامل مع رفع الصورة
+        // التعامل مع رفع الصورة إذا كانت موجودة
         if ($request->hasFile('image')) {
+            // حذف الصورة القديمة إذا كانت موجودة
+            if ($appartement->image && file_exists(public_path($appartement->image))) {
+                unlink(public_path($appartement->image));
+            }
+
+            // رفع الصورة الجديدة
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path(), $imageName); // تخزين الصورة في مجلد public مباشرة
-            $validated['image'] = $imageName; // حفظ اسم الصورة فقط
+            $request->image->move(public_path('images'), $imageName);
+            $validated['image'] = 'images/' . $imageName; // حفظ المسار الكامل للصورة
         }
 
         // تحديث بيانات الغرفة
@@ -95,6 +99,11 @@ class CreateAppartementController extends Controller
     {
         // البحث عن الغرفة باستخدام المعرف
         $appartement = CreateAppartement::findOrFail($id);
+
+        // حذف الصورة إذا كانت موجودة
+        if ($appartement->image && file_exists(public_path($appartement->image))) {
+            unlink(public_path($appartement->image));
+        }
 
         // حذف الغرفة من قاعدة البيانات
         $appartement->delete();

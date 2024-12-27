@@ -34,11 +34,8 @@
 
             @csrf
             <div class="card">
-                @if ($room->image)
-                <img src="{{ asset('images/' . $room->image) }}" alt="{{ $room->nom }}">
-            @else
-                <img src="{{ asset('images/default.jpeg') }}" alt="Default image">
-            @endif                <div class="card-info">
+                <img src="{{ asset($room->image ? $room->image : 'images/default.jpeg') }}" alt="{{ $room->nom }}">
+                               <div class="card-info">
                     <h3>{{ $room->nom }}</h3>
                     <p>{{ $room->description }}</p>
                     <p class="price">Prix: {{ $room->prix }}MAD / nuit</p>
