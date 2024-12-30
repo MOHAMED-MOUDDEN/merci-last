@@ -172,6 +172,10 @@ Route::get('/menu/voirmenu', [MenuController::class, 'voirmenu'])->name('client.
 
 Route::prefix('admin/menu')->group(function () {
     // مسارات إنشاء وتخزين PetitsDejeuners
+    Route::resource('petits-dejeuners', MenuControllerl::class);
+    Route::resource('supplements', MenuControllerl::class);
+    Route::resource('brunches', MenuControllerl::class);
+
     Route::get('create-petits-dejeuner', [MenuController::class, 'createPetitsDejeuner'])->name('admin.menu.create-petits-dejeuner');
     Route::post('store-petits-dejeuner', [MenuController::class, 'storePetitsDejeuner'])->name('admin.menu.store-petits-dejeuner');
 
