@@ -10,25 +10,31 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    { if (!Schema::hasTable('appartements')) { // التأكد من عدم وجود الجدول مسبقاً
-        Schema::create('appartements', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom');
-            $table->text('description')->nullable();
-            $table->string('image')->nullable();
-            $table->float('prix');
-            $table->integer('etoiles')->default(3);
-            $table->string('extra_info')->nullable();
-            $table->timestamps();
+    {
+        if (!Schema::hasTable('appartement')) {
+            Schema::create('appartement', function (Blueprint $table) {
+                $table->id();
+                $table->string('nom');
+                $table->string('prenom');
+                $table->string('email');
+                $table->string('adresse')->nullable();
+                $table->string('ville');
+                $table->string('codePostal');
+                $table->string('telephone');
 
-        });
-    }}
+                $table->unsignedBigInteger('room_id');
+                $table->foreign('room_id')->references('id')->on('appartements')->onDelete('cascade');
+
+                $table->timestamps();
+            });
+        }
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('appartements');
+        Schema::dropIfExists('appartement');
     }
 };
