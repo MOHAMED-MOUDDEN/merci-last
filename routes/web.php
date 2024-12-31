@@ -181,14 +181,19 @@ Route::prefix('admin/menu')->group(function () {
 
     // إضافة مسار لعرض جميع الـ PetitsDejeuners
     Route::get('petits-dejeuners', [MenuController::class, 'indexPetitsDejeuners'])->name('admin.menu.petits-dejeuners.index');
+    Route::post('store-petit-dejeuners', [MenuController::class, 'storepetit-dejeuners'])->name('admin.menu.store-petit-dejeuners');
+
+    Route::delete('petits-dejeuners/{id}', [MenuController::class, 'destroyPetitsDejeuner'])->name('admin.menu.petits-dejeuners.destroy');
 
     // مسارات إنشاء وتخزين Brunch
     Route::get('create-brunch', [MenuController::class, 'createBrunch'])->name('admin.menu.create-brunch');
     Route::post('store-brunch', [MenuController::class, 'storeBrunch'])->name('admin.menu.store-brunch');
+    Route::delete('brunches/{id}', [MenuController::class, 'destroyBrunch'])->name('admin.menu.brunches.destroy');
 
     // مسارات إنشاء وتخزين Supplement
     Route::get('create-supplement', [MenuController::class, 'createSupplement'])->name('admin.menu.create-supplement');
     Route::post('store-supplement', [MenuController::class, 'storeSupplement'])->name('admin.menu.store-supplement');
+    Route::delete('supplements/{id}', [MenuController::class, 'destroySupplement'])->name('admin.menu.supplements.destroy');
 
     // إضافة مسار لعرض قائمة supplements
     Route::get('supplements', [MenuController::class, 'indexSupplements'])->name('admin.menu.supplements.index');

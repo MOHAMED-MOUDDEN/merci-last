@@ -69,6 +69,28 @@ class MenuController extends Controller
 
         return redirect()->route('admin.menu.brunches.index');
     }
+    public function destroyBrunch($id)
+{
+    $brunch = Brunch::findOrFail($id); // العثور على العنصر
+    $brunch->delete(); // حذف العنصر
+
+    return redirect()->route('admin.menu.brunches.index')->with('success', 'تم حذف البرنش بنجاح.');
+}
+public function destroySupplement($id)
+{
+    $supplement = Supplement::findOrFail($id); // العثور على العنصر
+    $supplement->delete(); // حذف العنصر
+
+    return redirect()->route('admin.menu.supplements.index')->with('success', 'تم حذف الـ Supplement بنجاح.');
+}
+public function destroyPetitsDejeuner($id)
+{
+    $petitsDejeuner = PetitsDejeuner::findOrFail($id); // العثور على العنصر
+    $petitsDejeuner->delete(); // حذف العنصر
+
+    return redirect()->route('admin.menu.petits-dejeuners.index')->with('success', 'تم حذف الـ Petits Dejeuner بنجاح.');
+}
+
 
     public function createSupplement()
     {

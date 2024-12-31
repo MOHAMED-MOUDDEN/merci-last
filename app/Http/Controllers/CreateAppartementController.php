@@ -32,20 +32,16 @@ class CreateAppartementController extends Controller
             'extra_info' => 'nullable|string|max:255',
         ]);
 
-        // التعامل مع رفع الصورة
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images'), $imageName); // تخزين الصورة في مجلد public/images
-            $validatedData['image'] = 'images/' . $imageName; // حفظ المسار الكامل للصورة
+            $request->image->move(public_path('images'), $imageName); 
+            $validatedData['image'] = 'images/' . $imageName; 
         }
 
-        // ضبط القيمة الافتراضية لـ etoiles إذا لم يتم تقديمها
         $validatedData['etoiles'] = $validatedData['etoiles'] ?? 3;
 
-        // إنشاء غرفة جديدة
         CreateAppartement::create($validatedData);
 
-        // إعادة التوجيه إلى صفحة عرض الغرف مع رسالة نجاح
         return redirect()->route('appartements.index')->with('success', 'Appartement créé avec succès !');
     }
 
