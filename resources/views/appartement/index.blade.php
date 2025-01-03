@@ -30,7 +30,7 @@
 
     <div class="card-container">
         @foreach($rooms as $room)
-        <form action="{{url(route('appartement.appartementValid', ['id' => $room->id])) }}" method="POST">
+        <form action="{{secure_url(route('appartement.appartementValid', ['id' => $room->id])) }}" method="POST">
 
             @csrf
             <div class="card">
