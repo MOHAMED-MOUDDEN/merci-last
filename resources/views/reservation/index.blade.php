@@ -14,8 +14,8 @@
     @media screen and (max-width: 992px){
         td {
             position: relative !important;
-
-        }
+            
+        } 
         td .btn {
         width: 100%;
     }
@@ -44,7 +44,7 @@
 
             <a class="btn btn-primary btn-lg p-3" href="{{ route('reservation.create') }}" role="button">ajouter réservation</a>
 
-
+            
 
         </div>
         @if ($reservations->count() > 0)
@@ -57,9 +57,7 @@
                         <th scope="col">name</th>
                         <th scope="col">phone</th>
                         <th scope="col" style="width:300px">email</th>
-                        <th scope="col" style="text-align: center" >type de <br> reservation</th>
-
-                        <th  scope="col" >actions</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,15 +69,13 @@
                             <td data-label="name" style="white-space: wrap; border-top: 0px;" >{{ $item->nom }}</td>
                             <td data-label="phone"  style="border-top: 0px;">{{ $item->phone }}</td>
                             <td data-label="email"  style="border-top: 0px; overflow:auto;">{{ $item->email }}</td>
-                            <td data-label="phone" style="border-top: 0px;">chambre</td>
-
 
                             <td style="display: flex;flex-direction: column; border-top: 0px;" class="td-btn"><a class="btn btn-success" href="{{ route('reservation.edit', $item->id) }}"><i
                                         class="fa-solid fa-pen-to-square"></i></a>&nbsp;
-
+                            
                              <a class="btn btn-primary" href="{{ route('reservation.show', $item->id) }}"><i
                                         class="fa-solid fa-eye fa-1x"></i></a>&nbsp;
-
+                            
                                 <form action="{{ secure_url(route('reservation.destroy', $item->id)) }}" method="post">
                                     <button type="submit" class="btn btn-danger">delete</button>
                                     @csrf
@@ -96,7 +92,7 @@
                     {{ $msg }}
                 </div>
             @endif
-
+            
     </div>
 @else
     <div class="alert alert-danger">no reservations</div>
