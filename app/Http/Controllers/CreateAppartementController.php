@@ -38,12 +38,7 @@ class CreateAppartementController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imagePath = 'upload/photos/' . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('upload/photos'), $imagePath);
-        }
+        $imagePath = $this->uploadImage($request, 'upload/photos');
 
         CreateAppartement::create([
             'nom' => $request->nom,
@@ -87,10 +82,7 @@ class CreateAppartementController extends Controller
                 unlink(public_path($room->image));
             }
 
-            $image = $request->file('image');
-            $imagePath = 'upload/photos/' . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('upload/photos'), $imagePath);
-            $room->image = $imagePath;
+            $room->image = $this->uploadImage($request, 'upload/photos');
         }
 
         $room->update([
@@ -100,8 +92,6 @@ class CreateAppartementController extends Controller
             'etoiles' => $request->etoiles ?? $room->etoiles,
             'extra_info' => $request->extra_info,
         ]);
-
-        $room->save();
 
         return redirect()->route('appartements.index')->with('success', 'Appartement mis à jour avec succès!');
     }
@@ -120,5 +110,19 @@ class CreateAppartementController extends Controller
         $room->delete();
 
         return redirect()->route('appartements.index')->with('success', 'Appartement supprimé avec succès!');
+    }
+
+    /**
+     * Upload the image and return its path.
+     */
+    private function uploadImage(Request $request, $directory)
+    {
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path($directory), $imageName);
+            return $directory . '/' . $imageName;
+        }
+        return null;
     }
 }
