@@ -154,7 +154,7 @@ Route::get('/appartement/validate/{id}', [AppartementController::class, 'validat
 Route::post('/appartement/valid/{id}', [AppartementController::class, 'Validation2'])->name('appartement.appartementValid');
 
 // المسارات الإضافية للشقق
-Route::get('/appartements', [AppartementController::class, 'index'])->name('appartements.index');
+Route::get('/appartements', [AppartementController::class, 'index'])->name('appartement.index');
 Route::get('/appartement/admin', [AppartementController::class, 'appartementAdmin'])->name('appartement.admin');
 
 // مسارات CRUD الإضافية
