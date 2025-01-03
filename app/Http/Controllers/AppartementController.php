@@ -29,7 +29,7 @@ class AppartementController extends Controller
         ]);
 
         // رفع الصورة إذا كانت موجودة
-        $validatedData['image'] = $this->uploadImage($request, 'images/appartements');
+        $validatedData['image'] = $this->uploadImage($request, 'upload/photos');
 
         // إنشاء الشقة
         CreateAppartement::create($validatedData);
@@ -60,7 +60,7 @@ class AppartementController extends Controller
         $room = CreateAppartement::findOrFail($id);
 
         // رفع الصورة الجديدة إذا كانت موجودة
-        $validatedData['image'] = $this->uploadImage($request, 'images/appartements', $room->image);
+        $validatedData['image'] = $this->uploadImage($request, 'upload/photos', $room->image);
 
         // تحديث بيانات الشقة
         $room->update($validatedData);
@@ -97,12 +97,12 @@ class AppartementController extends Controller
         $rooms = CreateAppartement::all();
         return view('admin.rooms.index', compact('rooms'));
     }
+
     public function appartementAdmin()
     {
         $rooms = CreateAppartement::all();
         return view('appartement.admin', compact('rooms'));
     }
-
 
     // عرض تفاصيل شقة مع التحقق من السعر
     public function Validation2($id)
@@ -130,6 +130,7 @@ class AppartementController extends Controller
             return $directory . '/' . $imageName;
         }
 
+        // العودة للصورة القديمة إذا لم تكن هناك صورة جديدة
         return $existingImage;
     }
 }
