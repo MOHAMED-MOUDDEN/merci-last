@@ -97,6 +97,12 @@ class AppartementController extends Controller
         $rooms = CreateAppartement::all();
         return view('admin.rooms.index', compact('rooms'));
     }
+    public function appartementAdmin()
+    {
+        $rooms = CreateAppartement::all();
+        return view('appartement.admin', compact('rooms'));
+    }
+
 
     // عرض تفاصيل شقة مع التحقق من السعر
     public function Validation2($id)
