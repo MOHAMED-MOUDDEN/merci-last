@@ -30,11 +30,11 @@
 
     <div class="card-container">
         @foreach($rooms as $room)
-        <form action="{{ secure_url(route('appartement.appartementValid', ['id' => $room->id])) }}" method="POST">
+        <form action="{{url(route('appartement.appartementValid', ['id' => $room->id])) }}" method="POST">
 
             @csrf
             <div class="card">
-                <img src="{{ asset($room->image ? $room->image : 'images/default.jpeg') }}" alt="{{ $room->nom }}">
+                <img src="{{ url($room->image ? $room->image : 'images/default.jpeg') }}" alt="{{ $room->nom }}">
                                <div class="card-info">
                     <h3>{{ $room->nom }}</h3>
                     <p>{{ $room->description }}</p>
