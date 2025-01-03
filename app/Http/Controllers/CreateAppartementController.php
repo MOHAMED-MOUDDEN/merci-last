@@ -49,7 +49,7 @@ class CreateAppartementController extends Controller
             'image' => $imagePath,
         ]);
 
-        return redirect()->route('appartements.index')->with('success', 'Appartement ajouté avec succès!');
+        return redirect()->route('appartement.index')->with('success', 'Appartement ajouté avec succès!');
     }
 
     /**
