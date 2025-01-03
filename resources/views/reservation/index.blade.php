@@ -112,13 +112,13 @@
                     {{ $msg }}
                 </div>
             @endif
-            
+           <div class="alert">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+  <strong>Remarque :</strong>  Les réservations indiquant une ou plusieurs personnes concernent les réservations de table, tandis que les réservations qui contiennent uniquement le numéro concernent les réservations de chambres.
+</div> 
     </div>
 @else
     <div class="alert alert-danger">no reservations</div>
     @endif
-<div class="alert">
-  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-  <strong>Remarque :</strong>  Les réservations indiquant une ou plusieurs personnes concernent les réservations de table, tandis que les réservations qui contiennent uniquement le numéro concernent les réservations de chambres.
-</div>
+
 @endsection
