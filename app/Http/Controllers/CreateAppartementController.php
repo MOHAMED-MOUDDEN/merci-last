@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -6,106 +7,118 @@ use App\Models\CreateAppartement;
 
 class CreateAppartementController extends Controller
 {
-    // عرض جميع الغرف
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $rooms = CreateAppartement::all();
         return view('appartement.index', compact('rooms'));
     }
 
-    // عرض صفحة إنشاء غرفة جديدة
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         return view('appartement.create');
     }
 
-    // تخزين الغرفة الجديدة في قاعدة البيانات
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        // التحقق من صحة البيانات المدخلة
-        $validatedData = $request->validate([
+        $request->validate([
             'nom' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'prix' => 'required|numeric|min:0',
             'etoiles' => 'nullable|integer|min:1|max:5',
             'extra_info' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        $imagePath = null;
         if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images'), $imageName); 
-            $validatedData['image'] = 'images/' . $imageName; 
+            $image = $request->file('image');
+            $imagePath = 'upload/photos/' . uniqid() . $image->getClientOriginalName();
+            $image->move(public_path('upload/photos'), $imagePath);
         }
 
-        $validatedData['etoiles'] = $validatedData['etoiles'] ?? 3;
+        CreateAppartement::create([
+            'nom' => $request->nom,
+            'description' => $request->description,
+            'prix' => $request->prix,
+            'etoiles' => $request->etoiles ?? 3,
+            'extra_info' => $request->extra_info,
+            'image' => $imagePath,
+        ]);
 
-        CreateAppartement::create($validatedData);
-
-        return redirect()->route('appartements.index')->with('success', 'Appartement créé avec succès !');
+        return redirect()->route('appartements.index')->with('success', 'Appartement ajouté avec succès!');
     }
 
-    // عرض صفحة تعديل غرفة معينة
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit($id)
     {
-        // البحث عن الغرفة باستخدام المعرف
-        $appartement = CreateAppartement::findOrFail($id);
-
-        // عرض صفحة التعديل مع تمرير بيانات الغرفة
-        return view('appartement.edit', compact('appartement'));
+        $room = CreateAppartement::findOrFail($id);
+        return view('appartement.edit', compact('room'));
     }
 
-    // تحديث الغرفة في قاعدة البيانات
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, $id)
     {
-        // التحقق من صحة البيانات المدخلة
-        $validated = $request->validate([
+        $request->validate([
             'nom' => 'required|string|max:255',
             'description' => 'required|string',
             'prix' => 'required|numeric|min:0',
             'etoiles' => 'nullable|integer|min:1|max:5',
             'extra_info' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // إضافة شرط الصورة
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // البحث عن الغرفة باستخدام المعرف
-        $appartement = CreateAppartement::findOrFail($id);
+        $room = CreateAppartement::findOrFail($id);
 
-        // التعامل مع رفع الصورة إذا كانت موجودة
         if ($request->hasFile('image')) {
-            // حذف الصورة القديمة إذا كانت موجودة
-            if ($appartement->image && file_exists(public_path($appartement->image))) {
-                unlink(public_path($appartement->image));
+            if ($room->image && file_exists(public_path($room->image))) {
+                unlink(public_path($room->image));
             }
 
-            // رفع الصورة الجديدة
-            $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images'), $imageName);
-            $validated['image'] = 'images/' . $imageName; // حفظ المسار الكامل للصورة
+            $image = $request->file('image');
+            $imagePath = 'upload/photos/' . uniqid() . $image->getClientOriginalName();
+            $image->move(public_path('upload/photos'), $imagePath);
+            $room->image = $imagePath;
         }
 
-        // تحديث بيانات الغرفة
-        $appartement->update($validated);
+        $room->update([
+            'nom' => $request->nom,
+            'description' => $request->description,
+            'prix' => $request->prix,
+            'etoiles' => $request->etoiles ?? $room->etoiles,
+            'extra_info' => $request->extra_info,
+        ]);
 
-        // إعادة التوجيه إلى صفحة عرض الغرف مع رسالة نجاح
-        return redirect()->route('appartements.index')->with('success', 'Appartement mis à jour avec succès');
+        $room->save();
+
+        return redirect()->route('appartements.index')->with('success', 'Appartement mis à jour avec succès!');
     }
 
-    // حذف الغرفة
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id)
     {
-        // البحث عن الغرفة باستخدام المعرف
-        $appartement = CreateAppartement::findOrFail($id);
+        $room = CreateAppartement::findOrFail($id);
 
-        // حذف الصورة إذا كانت موجودة
-        if ($appartement->image && file_exists(public_path($appartement->image))) {
-            unlink(public_path($appartement->image));
+        if ($room->image && file_exists(public_path($room->image))) {
+            unlink(public_path($room->image));
         }
 
-        // حذف الغرفة من قاعدة البيانات
-        $appartement->delete();
+        $room->delete();
 
-        // إعادة التوجيه إلى صفحة عرض الغرف مع رسالة نجاح
-        return redirect()->route('appartements.index')->with('success', 'Appartement supprimé avec succès');
+        return redirect()->route('appartements.index')->with('success', 'Appartement supprimé avec succès!');
     }
 }
