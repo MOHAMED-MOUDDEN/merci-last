@@ -37,7 +37,7 @@ class AppartementController extends Controller
 
         CreateAppartement::create($validatedData);
 
-        return redirect()->route('appartement.index')->with('success', 'Appartement ajouté avec succès!');
+        return redirect()->route('appartement.index ')->with('success', 'Appartement ajouté avec succès!');
     }
 
     // تعديل شقة موجودة
