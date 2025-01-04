@@ -155,6 +155,7 @@ Route::post('/appartement/valid/{id}', [AppartementController::class, 'Validatio
 Route::get('/appartement/admin', [AppartementController::class, 'appartementAdmin'])->name('appartement.admin');
 Route::get('/ApparetementIndex', [AppartementController::class, 'index'])->name('Apparetementindex');
 
+Route::get('/appartements/{id}/edit', [AppartementController::class, 'edit'])->name('appartement.edit');
 
 
 // مسار قائمة الطعام
