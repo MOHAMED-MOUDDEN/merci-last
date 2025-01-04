@@ -157,6 +157,7 @@ Route::get('/ApparetementIndex', [AppartementController::class, 'index'])->name(
 
 Route::get('/appartements/{id}/edit', [AppartementController::class, 'edit'])->name('appartement.edit');
 
+Route::delete('/appartements/{id}', [AppartementController::class, 'destroy'])->name('appartement.destroy');
 
 // مسار قائمة الطعام
 Route::get('/menu/voirmenu', [MenuController::class, 'voirmenu'])->name('client.menu.voirmenu');
