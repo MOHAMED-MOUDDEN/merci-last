@@ -6,28 +6,20 @@ use Illuminate\Http\Request;
 
 class CheckRole
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  mixed  ...$roles
-     * @return mixed
-     */
     public function handle(Request $request, Closure $next, $role)
     {
-        // التحقق من إذا كان المستخدم مسجلاً
+        // تحقق من أن المستخدم مسجل في الجلسة
         if (auth()->check()) {
-            // التحقق من دور المستخدم الحالي
+            // تحقق من إذا كان للمستخدم الدور المطلوب
             if (auth()->user()->role == $role) {
-                return $next($request);
+                return $next($request); // السماح بالوصول إلى المسار
             } else {
-                // إذا لم يكن للمستخدم الدور المطلوب
-                return redirect()->route('home')->with('error', 'You do not have permission to access this page.');
+                // توجيه المستخدم إلى صفحة الخطأ أو الصفحة الرئيسية
+                return redirect()->route('home')->with('error', 'Access Denied');
             }
         }
 
-        // إذا لم يكن المستخدم مسجلاً
+        // إذا كان المستخدم غير مسجل
         return redirect()->route('login')->with('error', 'You need to log in first.');
     }
 }
