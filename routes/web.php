@@ -179,7 +179,7 @@ Route::prefix('admin/menu')->group(function () {
     Route::get('petits-dejeuners', [MenuController::class, 'indexPetitsDejeuners'])->name('admin.menu.petits-dejeuners.index');
     Route::post('store-petit-dejeuners', [MenuController::class, 'storepetit-dejeuners'])->name('admin.menu.store-petit-dejeuners');
 
-    // إعادة تعريف المسار destroy يدويا
+    // إعادة تعريف المسار destroy يدوياdestroyPetitsDejeuner
     Route::delete('petits-dejeuners/{id}', [MenuController::class, 'destroyPetitsDejeuner'])->name('admin.menu.petits-dejeuners.destroy');
 
     // مسارات لإنشاء وتخزين Brunch
