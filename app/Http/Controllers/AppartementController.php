@@ -60,29 +60,29 @@ class AppartementController extends Controller
             'extra_info' => 'nullable|string|max:500',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',  // Allowing image validation
         ]);
-    
+
         $room = CreateAppartement::findOrFail($id);
-    
+
         // Handle image upload if new image is provided
         if ($request->hasFile('image')) {
             // Delete the old image if exists
             if ($room->image && file_exists(public_path($room->image))) {
                 unlink(public_path($room->image));
             }
-    
+
             // Upload the new image
             $validatedData['image'] = $this->uploadImage($request, 'upload/photos');
         } else {
             // If no new image provided, keep the old image
             $validatedData['image'] = $room->image;
         }
-    
+
         // Update the room record
         $room->update($validatedData);
-    
+
         return redirect()->route('appartement.index')->with('success', 'Appartement mis à jour avec succès!');
     }
-    
+
     // حذف شقة
     public function destroy($id)
     {
