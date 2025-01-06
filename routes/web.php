@@ -142,30 +142,21 @@ Route::get('/Menu/Gdrinks', [clientMenu::class, 'index_Gdrinks'])->name('Gdrinks
 Route::get('/Menu/A-La-Carte', [clientMenu::class, 'index_Alacarte'])->name('Alacarte');
 Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
 
-
-
-
 // المسارات العامة لشقق
-Route::resource('appartements', AppartementController::class)->except(['show']);
-
-// المسارات المخصصة للتأكيد والعمليات الخاصة بالشقق
-Route::get('/appartement/validation/{id}', [AppartementController::class, 'validation'])->name('appartement.validation');
-Route::get('/appartement/validate/{id}', [AppartementController::class, 'validateAppartement'])->name('appartement.validate');
-Route::post('/appartement/valid/{id}', [AppartementController::class, 'Validation2'])->name('appartement.appartementValid');
-
-// المسارات الإضافية للشقق
 Route::get('/appartements', [AppartementController::class, 'index'])->name('appartement.index');
-
-// مسارات CRUD الإضافية
-Route::post('/appartements/store', [AppartementController::class, 'store'])->name('appartements.store');
+Route::get('/appartements/create', [AppartementController::class, 'create'])->name('appartement.create');
+Route::post('/appartements/store', [AppartementController::class, 'store'])->name('appartement.store');
 Route::get('/appartements/{id}/edit', [AppartementController::class, 'edit'])->name('appartement.edit');
-Route::put('/appartement/{id}', [AppartementController::class, 'update'])->name('appartement.update');
-Route::delete('/appartement/{id}', [AppartementController::class, 'destroy'])->name('appartement.destroy');
-Route::get('/appartements/create', [AppartementController::class, 'create'])->name('appartements.create');
+Route::put('/appartements/{id}', [AppartementController::class, 'update'])->name('appartement.update');
+Route::delete('/appartements/{id}', [AppartementController::class, 'destroy'])->name('appartement.destroy');
 
-// مسار عرض قائمة الشقق
-Route::get('/ApparetementIndex', [AppartementController::class, 'index'])->name('Apparetementindex');
+// المسارات الخاصة بعرض الشقق في لوحة الإدارة
+Route::get('/admin/appartements', [AppartementController::class, 'adminRooms'])->name('admin.rooms.index');
+Route::get('/appartement/admin', [AppartementController::class, 'appartementAdmin'])->name('appartement.admin');
 
+// المسارات الإضافية للتحقق والعمليات الخاصة
+Route::get('/appartement/validation', [AppartementController::class, 'validation'])->name('appartement.validation');
+Route::post('/appartement/valid/{id}', [AppartementController::class, 'Validation2'])->name('appartement.validation2');
 
 
 
