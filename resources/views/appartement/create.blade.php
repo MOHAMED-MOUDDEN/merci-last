@@ -11,7 +11,7 @@
 Créer un Nouvel Appartement    </h2>
     </section>
 
-    <form action="{{secure_url( route('appartements.store')) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('appartements.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <!-- Afficher les erreurs -->

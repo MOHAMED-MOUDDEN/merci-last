@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\CreateAppartement;
 
 class AppartementController extends Controller
@@ -33,7 +34,7 @@ class AppartementController extends Controller
             'extra_info' => 'nullable|string|max:500',
         ]);
 
-        $validatedData['image'] = $this->uploadImage($request, 'upload/photos');
+        $validatedData['image'] = $this->uploadImage($request, 'photos');
 
         CreateAppartement::create($validatedData);
 
@@ -61,7 +62,7 @@ class AppartementController extends Controller
 
         $room = CreateAppartement::findOrFail($id);
 
-        $validatedData['image'] = $this->uploadImage($request, 'upload/photos', $room->image);
+        $validatedData['image'] = $this->uploadImage($request, 'photos', $room->image);
 
         $room->update($validatedData);
 
@@ -73,8 +74,8 @@ class AppartementController extends Controller
     {
         $room = CreateAppartement::findOrFail($id);
 
-        if ($room->image && file_exists(public_path($room->image))) {
-            unlink(public_path($room->image));
+        if ($room->image && Storage::disk('public')->exists($room->image)) {
+            Storage::disk('public')->delete($room->image);
         }
 
         $room->delete();
@@ -115,15 +116,12 @@ class AppartementController extends Controller
     private function uploadImage(Request $request, $directory, $existingImage = null)
     {
         if ($request->hasFile('image')) {
-            if ($existingImage && file_exists(public_path($existingImage))) {
-                unlink(public_path($existingImage));
+            if ($existingImage && Storage::disk('public')->exists($existingImage)) {
+                Storage::disk('public')->delete($existingImage);
             }
 
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path($directory), $imageName);
-
-            return $directory . '/' . $imageName;
+            $path = $request->file('image')->store($directory, 'public');
+            return $path;
         }
 
         return $existingImage;

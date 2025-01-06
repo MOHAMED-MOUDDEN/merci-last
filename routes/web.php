@@ -156,9 +156,14 @@ Route::get('/appartement/admin', [AppartementController::class, 'appartementAdmi
 
 // المسارات الإضافية للتحقق والعمليات الخاصة
 Route::get('/appartement/validation', [AppartementController::class, 'validation'])->name('appartement.validation');
-Route::post('/appartement/valid/{id}', [AppartementController::class, 'Validation2'])->name('appartement.validation2');
 
+Route::post('/appartements/store', [AppartementController::class, 'store'])->name('appartements.store');
 
+// المسارات المخصصة للتأكيد والعمليات الخاصة بالشقق
+Route::get('/appartement/validation/{id}', [AppartementController::class, 'validation'])->name('appartement.validation');
+Route::get('/appartement/validate/{id}', [AppartementController::class, 'validateAppartement'])->name('appartement.validate');
+Route::post('/appartement/valid/{id}', [AppartementController::class, 'Validation2'])->name('appartement.appartementValid');
+Route::get('/ApparetementIndex', [AppartementController::class, 'index'])->name('Apparetementindex');
 
 
 // مسار قائمة الطعام

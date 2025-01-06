@@ -34,13 +34,12 @@
 
             @csrf
             <div class="card">
-                <img src="  {{ secure_asset($room->image) }}" alt="{{ $room->nom }}">
-              
+                <img src="  {{ asset('storage/' . $room->image) }}" alt="{{ $room->nom }}">
 
                                <div class="card-info">
                     <h3>{{ $room->nom }}</h3>
                     <p>{{ $room->description }}</p>
-                    <p class="price">Prix: {{ $room->prix }}MAD / nuit</p>
+                    <p class="price">Prix: {{ $room->prix }}MAD / Nuit</p>
                     <div class="stars">
                         {!! str_repeat('★', $room->etoiles) !!}
                         {!! str_repeat('☆', 5 - $room->etoiles) !!}
