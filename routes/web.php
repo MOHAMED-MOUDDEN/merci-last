@@ -166,7 +166,7 @@ Route::post('/appartement/valid/{id}', [AppartementController::class, 'Validatio
 Route::get('/ApparetementIndex', [AppartementController::class, 'index'])->name('Apparetementindex');
 
 
-/Route::prefix('admin/menu')->group(function () {
+Route::prefix('admin/menu')->group(function () {
     // تصحيح التسمية
     Route::resource('petits-dejeuners', MenuController::class);
     Route::resource('supplements', MenuController::class);
