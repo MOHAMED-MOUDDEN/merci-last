@@ -150,7 +150,7 @@
             <ul id="submenu1" class="submenu">
                 <li><a href="admin/menu/brunches">Brunches</a></li>
                 <li><a href="admin/menu/supplements">Supplements</a></li>
-                 <li><a href="admin/menu/petiti">Petits Déjeuners</a></li>
+                 <li><a href="admin/menu/petit-dejeuners">Petits Déjeuners</a></li>
             </ul>
         </li>
 
