@@ -1,98 +1,62 @@
-@extends('layout')
+@extends('Admins.indexAdmin')
 
 @section('content')
-    <h1>Modifier l'Appartement</h1>
+<div class="container">
+    <br><br><br><br>
 
-    <form action="{{ {{secure_url(route('appartements.update', $appartement->id) }}" method="POST">
+    <section class="mb-5"
+    style="background-image: url(clientpage/images/bg-title-page-01.jpg); padding: 5em 0em;">
+    <h2 class="tit6 t-center" style="    font-size: 3rem;
+    text-align: center;
+    text-shadow: 0px 0 20px black;">
+Edit Appartement     </h2>
+    </section>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ secure_url(route('appartement.update', $room->id) )}}" method="POST">
         @csrf
         @method('PUT')
 
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" value="{{ $appartement->nom }}" required>
+        <div class="mb-3">
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="nom" name="nom" value="{{ old('nom', $room->nom) }}" required>
+        </div>
 
-        <label for="description">Description :</label>
-        <textarea id="description" name="description" required>{{ $appartement->description }}</textarea>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required>{{ old('description', $room->description) }}</textarea>
+        </div>
 
-        <label for="prix">Prix :</label>
-        <input type="number" id="prix" name="prix" value="{{ $appartement->prix }}" required>
+        <div class="mb-3">
+            <label for="prix" class="form-label">Prix</label>
+            <input type="number" class="form-control" id="prix" name="prix" value="{{ old('prix', $room->prix) }}" required>
+        </div>
 
-        <button type="submit" class="btn">Mettre à jour</button>
+        <div class="mb-3">
+            <label for="etoiles" class="form-label">Étoiles</label>
+            <input type="number" class="form-control" id="etoiles" name="etoiles" value="{{ old('etoiles', $room->etoiles) }}" min="1" max="5" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Image (URL)</label>
+            <input type="text" class="form-control" id="image" name="image" value="{{ old('image', $room->image) }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="extra_info" class="form-label">Extra Information</label>
+            <textarea class="form-control" id="extra_info" name="extra_info" rows="3">{{ old('extra_info', $room->extra_info) }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{{ route('appartement.index') }}" class="btn btn-secondary">Cancel</a>
     </form>
-
-    <style>
-        /* admin.css */
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f8f8;
-    margin: 0;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-    font-size: 28px;
-    margin-bottom: 20px;
-}
-
-form {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 2px solid #333; /* Contour noir */
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #333;
-}
-
-input[type="text"],
-input[type="number"],
-textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
-    font-size: 16px;
-}
-
-input[type="text"]:focus,
-input[type="number"]:focus,
-textarea:focus {
-    border-color: #ff0000; /* Bordure rouge en focus */
-    outline: none;
-}
-
-textarea {
-    height: 100px;
-    resize: vertical;
-}
-
-.btn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #ff0000; /* Rouge pour le bouton */
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-    background-color: #cc0000; /* Rouge foncé au survol */
-}
-
-    </style>
+</div>
 @endsection
