@@ -152,7 +152,7 @@ telles que les détails de livraison et les préférences spéciales, pour que n
                                             @endphp
                                             <textarea name="commande" id="" cols="30" rows="10" hidden>
                                             @foreach ($cartItems as $cartItem)
-                                                Article {{$n}}: {{$cartItem->name}} ({{$cartItem->price}} DH x {{$cartItem->qty}}) |
+                                                Article {{$n}}: {{$cartItem->name}} ({{$cartItem->price}} MAD x {{$cartItem->qty}}) |
                                             @php
                                                 $n++;
                                             @endphp
@@ -208,7 +208,7 @@ telles que les détails de livraison et les préférences spéciales, pour que n
                                 <input type="radio" name="Mlivraison" id="" onclick="UnchoseLivraison()" value="Retirer sur place"> <span>Retirer sur place</span>
                             </div>
                             <div class="LD">
-                                <input type="radio" name="Mlivraison" id="" onclick="ChoseLivraison()" value="Livraison à domicile"> <span>Livraison à domicile (+15 DH)</span>
+                                <input type="radio" name="Mlivraison" id="" onclick="ChoseLivraison()" value="Livraison à domicile"> <span>Livraison à domicile (+15 MAD)</span>
                             </div>
 
                         </div>
@@ -267,9 +267,9 @@ telles que les détails de livraison et les préférences spéciales, pour que n
                                         <th scope="row"><img src="{{$cartItem->model->image}}" alt="product-img" title="product-img" class="avatar-lg rounded"></th>
                                         <td>
                                             <h5 class="font-size-16 text-truncate" style="white-space: wrap;">{{$cartItem->name}}</h5>
-                                            <p class="text-muted mb-0 mt-1">{{$cartItem->price}} DH x {{$cartItem->qty}}</p>
+                                            <p class="text-muted mb-0 mt-1">{{$cartItem->price}} MAD x {{$cartItem->qty}}</p>
                                         </td>
-                                        <td style="white-space: nowrap; text-align: center;">{{ $cartItem->price * $cartItem->qty }} DH</td>
+                                        <td style="white-space: nowrap; text-align: center;">{{ $cartItem->price * $cartItem->qty }} MAD</td>
                                     </tr>
                                     @endforeach
 
@@ -281,7 +281,7 @@ telles que les détails de livraison et les préférences spéciales, pour que n
                                         <h5 class="font-size-14 m-0">Subtotal:</h5>
                                     </td>
                                     <td style="white-space: nowrap;">
-                                        {{$total}} DH
+                                        {{$total}} MAD
                                     </td>
                                 </tr>
                                 <tr class="bg-light" id="trLivraison" style="display: none">
@@ -289,7 +289,7 @@ telles que les détails de livraison et les préférences spéciales, pour que n
                                         <h5 class="font-size-14 m-0">Livraison:</h5>
                                     </td>
                                     <td style="white-space: nowrap;">
-                                        +15 DH
+                                        +15 MAD
                                     </td>
                                 </tr>
                                 <tr class="bg-light" id="trdiscount" style="display: none">
@@ -305,10 +305,10 @@ telles que les détails de livraison et les préférences spéciales, pour que n
                                         <h5 class="font-size-14 m-0">Total:</h5>
                                     </td>
                                     <td id="livrason1" style="display: none; white-space: nowrap;">
-                                        {{($total + 15) - ($total + 15)*Session::get('discount')/100}} DH
+                                        {{($total + 15) - ($total + 15)*Session::get('discount')/100}} MAD
                                     </td>
                                     <td id="livrason0" style="white-space: nowrap;">
-                                        {{$total - $total*Session::get('discount')/100}} DH
+                                        {{$total - $total*Session::get('discount')/100}} MAD
                                     </td>
                                 </tr>
                                 <input type="hidden" value="{{$total}}" name="prix" id="total">
@@ -319,7 +319,7 @@ telles que les détails de livraison et les préférences spéciales, pour que n
                                         <h5 class="font-size-14 m-0">Total:</h5>
                                     </td>
                                     <td style="white-space: nowrap;">
-                                        0 DH
+                                        0 MAD
                                     </td>
                                 </tr>
                                 @endif
