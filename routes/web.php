@@ -165,6 +165,7 @@ Route::get('/appartement/validate/{id}', [AppartementController::class, 'validat
 Route::post('/appartement/valid/{id}', [AppartementController::class, 'Validation2'])->name('appartement.appartementValid');
 Route::get('/ApparetementIndex', [AppartementController::class, 'index'])->name('Apparetementindex');
 
+Route::get('/menu/voirmenu', [MenuController::class, 'voirmenu'])->name('client.menu.voirmenu');
 
 Route::prefix('admin/menu')->group(function () {
     // تصحيح التسمية
