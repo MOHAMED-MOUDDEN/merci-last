@@ -48,7 +48,7 @@ List de Supplements    </h2>
                 <td>{{ $supplement->nom }}</td>
                 <td>{{ $supplement->description }}</td>
                 <td>{{ $supplement->prix }} MAD</td>
-                <td><img src="{{ asset('storage/' . $supplement->image) }}" width="100" alt="{{ $supplement->nom }}"></td>
+                <td><img src="{{ secure_asset(' $supplement->image) }}" width="100" alt="{{ $supplement->nom }}"></td>
                 <td class="action-buttons">
                     <form action="{{ secure_url(route('supplements.destroy', $supplement->id)) }}" method="POST" style="display: inline;">
                         @csrf

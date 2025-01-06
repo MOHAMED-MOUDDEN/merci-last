@@ -47,7 +47,8 @@ text-shadow: 0px 0 20px black;">
                     <td>{{ $petitDejeuner->nom }}</td>
                     <td>{{ $petitDejeuner->description }}</td>
                     <td>{{ $petitDejeuner->prix }} MAD</td>
-                    <td><img src="{{ secure_asset('storage/' . $petitDejeuner->image) }}" alt="Image" width="100"></td>
+
+                    <td><img src="{{ secure_asset( $petitDejeuner->image) }}" alt="Image" width="100"></td>
 
                     <td class="action-buttons">
                         <form action="{{ secure_url(route('petits-dejeuners.destroy', $petitDejeuner->id)) }}" method="POST" style="display: inline;">
