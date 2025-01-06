@@ -28,7 +28,7 @@ text-shadow: 0px 0 20px black;">
   List de Petits Dejeuners
 </h2>
 </section>
-    <a href="{{ route('admin.menu.create-petits-dejeuner') }}" class="btn btn-primary">إضافة Petit Dejeuner</a>
+    <a href="{{ route('admin.menu.create-petits-dejeuner') }}" class="btn btn-primary">Ajouter un Petit Dejeuner</a>
 
     <table class="table mt-3">
         <thead>
@@ -37,6 +37,8 @@ text-shadow: 0px 0 20px black;">
                 <th>Description</th>
                 <th>Prix</th>
                 <th>Image</th>
+                <th>Actions</th>
+
             </tr>
         </thead>
         <tbody>
@@ -45,7 +47,7 @@ text-shadow: 0px 0 20px black;">
                     <td>{{ $petitDejeuner->nom }}</td>
                     <td>{{ $petitDejeuner->description }}</td>
                     <td>{{ $petitDejeuner->prix }} MAD</td>
-                    <td> <img src="{{ secure_asset($petitDejeuner->image) }}" width="100" alt="{{ $petitDejeuner->nom }}"></td>
+                    <td><img src="{{ secure_asset('storage/' . $petitDejeuner->image) }}" alt="Image" width="100"></td>
 
                     <td class="action-buttons">
                         <form action="{{ secure_url(route('petitDejeuner.destroy', $petitDejeuner->id)) }}" method="POST" style="display: inline;">

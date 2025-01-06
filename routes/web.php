@@ -194,5 +194,9 @@ Route::prefix('admin/menu')->group(function () {
 
     // إضافة مسار لعرض قائمة supplements
     Route::get('supplements', [MenuController::class, 'indexSupplements'])->name('admin.menu.supplements.index');
-    Route::get('brunches', [MenuController::class, 'indexBrunches'])->name('admin.menu.brunches.index');
+    Route::get('brunches', [MlenuController::class, 'indexBrunches'])->name('admin.menu.brunches.index');
+    
+    Route::get('petit-dejeuners', [MlenuController::class, 'indexPetitsDejeuners'])->name('admin.menu.petit-dejeners.index');
+
 });
+
