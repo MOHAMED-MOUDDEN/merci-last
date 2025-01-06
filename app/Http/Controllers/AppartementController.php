@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Models\CreateAppartement;
 
 class AppartementController extends Controller
@@ -34,8 +33,10 @@ class AppartementController extends Controller
             'extra_info' => 'nullable|string|max:500',
         ]);
 
-        $validatedData['image'] = $this->uploadImage($request, 'photos');
+        // رفع الصورة وتخزين المسار
+        $validatedData['image'] = $this->uploadImage($request, 'upload/photos');
 
+        // إنشاء الشقة في قاعدة البيانات
         CreateAppartement::create($validatedData);
 
         return redirect()->route('appartement.index')->with('success', 'Appartement ajouté avec succès!');
@@ -62,8 +63,10 @@ class AppartementController extends Controller
 
         $room = CreateAppartement::findOrFail($id);
 
-        $validatedData['image'] = $this->uploadImage($request, 'photos', $room->image);
+        // رفع الصورة في حال وجود صورة جديدة
+        $validatedData['image'] = $this->uploadImage($request, 'upload/photos', $room->image);
 
+        // تحديث البيانات في قاعدة البيانات
         $room->update($validatedData);
 
         return redirect()->route('appartement.index')->with('success', 'Appartement mis à jour avec succès!');
@@ -74,10 +77,12 @@ class AppartementController extends Controller
     {
         $room = CreateAppartement::findOrFail($id);
 
-        if ($room->image && Storage::disk('public')->exists($room->image)) {
-            Storage::disk('public')->delete($room->image);
+        // حذف الصورة إذا كانت موجودة
+        if ($room->image && file_exists(public_path($room->image))) {
+            unlink(public_path($room->image));
         }
 
+        // حذف الشقة
         $room->delete();
 
         return redirect()->route('appartement.index')->with('success', 'Appartement supprimé avec succès!');
@@ -116,14 +121,20 @@ class AppartementController extends Controller
     private function uploadImage(Request $request, $directory, $existingImage = null)
     {
         if ($request->hasFile('image')) {
-            if ($existingImage && Storage::disk('public')->exists($existingImage)) {
-                Storage::disk('public')->delete($existingImage);
+            // حذف الصورة القديمة إذا كانت موجودة
+            if ($existingImage && file_exists(public_path($existingImage))) {
+                unlink(public_path($existingImage));
             }
 
-            $path = $request->file('image')->store($directory, 'public');
-            return $path;
+            // رفع الصورة الجديدة
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path($directory), $imageName);
+
+            return $directory . '/' . $imageName;
         }
 
+        // إذا لم تكن هناك صورة جديدة، ارجع إلى الصورة السابقة
         return $existingImage;
     }
 }
