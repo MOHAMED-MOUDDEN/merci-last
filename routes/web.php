@@ -166,8 +166,7 @@ Route::post('/appartement/valid/{id}', [AppartementController::class, 'Validatio
 Route::get('/ApparetementIndex', [AppartementController::class, 'index'])->name('Apparetementindex');
 
 Route::get('/menu/voirmenu', [MenuController::class, 'voirmenu'])->name('client.menu.voirmenu');
-
-Route::prefix('admin/menu')->group(function () {
+Route::prefix('admin/menu')->middleware(['auth', 'role:1'])->group(function () {
     // تصحيح التسمية
     Route::resource('petits-dejeuners', MenuController::class);
     Route::resource('supplements', MenuController::class);
@@ -193,11 +192,10 @@ Route::prefix('admin/menu')->group(function () {
     Route::post('store-supplement', [MenuController::class, 'storeSupplement'])->name('admin.menu.store-supplement');
     Route::delete('supplements/{id}', [MenuController::class, 'destroySupplement'])->name('admin.menu.supplements.destroy');
 
-    // إضافة مسار لعرض قائمة supplements
-    Route::get('supplements', [MenuController::class, 'indexSupplements'])->name('admin.menu.supplements.index');
-    Route::get('brunches', [MenuController::class, 'indexBrunches'])->name('admin.menu.brunches.index');
-    
-    Route::get('petit-dejeuners', [MenuController::class, 'indexPetitsDejeuners'])->name('admin.menu.petit-dejeners.index');
-
+    // إضافة مسار لعرض قائمة 
+   
 });
+Route::get('/menu/voirmenu/supplements', [MenuController::class, 'indexSupplements'])->name('admin.menu.supplements.index');
+Route::get('/menu/voirmenu/brunches', [MenuController::class, 'indexBrunches'])->name('admin.menu.brunches.index');
 
+Route::get('/menu/voirmenu/petit-dejeuners', [MenuController::class, 'indexPetitsDejeuners'])->name('admin.menu.petit-dejeners.index');

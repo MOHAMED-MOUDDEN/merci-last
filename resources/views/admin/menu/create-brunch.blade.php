@@ -12,7 +12,7 @@
     <h2 class="tit6 t-center" style="    font-size: 3rem;
     text-align: center;
     text-shadow: 0px 0 20px black;">
-create brunch    </h2>
+Create Brunch    </h2>
     </section>
 
     <form action="{{secure_url( route('admin.menu.store-brunch') )}}" method="POST" enctype="multipart/form-data">

@@ -11,7 +11,7 @@
     <h2 class="tit6 t-center" style="    font-size: 3rem;
     text-align: center;
     text-shadow: 0px 0 20px black;">
-create petits De jeuner     </h2>
+Create Petits De Jeuner     </h2>
     </section>
     <form action="{{ secure_url(route('admin.menu.store-petits-dejeuner')) }}" method="POST" enctype="multipart/form-data">
         @csrf
