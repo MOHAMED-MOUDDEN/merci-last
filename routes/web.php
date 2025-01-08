@@ -193,8 +193,8 @@ Route::prefix('admin/menu')->middleware('admin')->group(function () {
     Route::post('store-supplement', [MenuController::class, 'storeSupplement'])->name('admin.menu.store-supplement');
     Route::delete('supplements/{id}', [MenuController::class, 'destroySupplement'])->name('admin.menu.supplements.destroy');
 
-    // إضافة مسار لعرض قائمة 
-   
+    // إضافة مسار لعرض قائمة
+
 });
 Route::get('/menu/voirmenu/supplements', [MenuController::class, 'indexSupplements'])->name('admin.menu.supplements.index');
 Route::get('/menu/voirmenu/brunches', [MenuController::class, 'indexBrunches'])->name('admin.menu.brunches.index');
