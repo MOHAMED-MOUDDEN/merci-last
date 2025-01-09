@@ -179,7 +179,7 @@ Route::prefix('admin/menu')->middleware('admin')->group(function () {
 
     Route::get('petits-dejeuners', [MenuController::class, 'indexPetitsDejeuners'])->name('admin.menu.petits-dejeuners.index');
     Route::post('store-petit-dejeuners', [MenuController::class, 'storepetit-dejeuners'])->name('admin.menu.store-petit-dejeuners');
-    Route::get('/menu/voirmenu/petit-dejeuners', [MenuController::class, 'indexPetitsDejeuners'])->name('admin.menu.petit-dejeners.index');
+    Route::get('/petit-dejeuners', [MenuController::class, 'indexPetitsDejeuners'])->name('admin.menu.petit-dejeners.index');
 
     // إعادة تعريف المسار destroy يدوياdestroyPetitsDejeuner
     Route::delete('petits-dejeuners/{id}', [MenuController::class, 'destroyPetitsDejeuner'])->name('admin.menu.petits-dejeuners.destroy');
@@ -188,15 +188,14 @@ Route::prefix('admin/menu')->middleware('admin')->group(function () {
     Route::get('create-brunch', [MenuController::class, 'createBrunch'])->name('admin.menu.create-brunch');
     Route::post('store-brunch', [MenuController::class, 'storeBrunch'])->name('admin.menu.store-brunch');
     Route::delete('brunches/{id}', [MenuController::class, 'destroyBrunch'])->name('admin.menu.brunches.destroy');
-    Route::get('/menu/voirmenu/brunches', [MenuController::class, 'indexBrunches'])->name('admin.menu.brunches.index');
+    Route::get('/brunches', [MenuController::class, 'indexBrunches'])->name('admin.menu.brunches.index');
 
     // مسارات لإنشاء وتخزين Supplement
     Route::get('create-supplement', [MenuController::class, 'createSupplement'])->name('admin.menu.create-supplement');
     Route::post('store-supplement', [MenuController::class, 'storeSupplement'])->name('admin.menu.store-supplement');
     Route::delete('supplements/{id}', [MenuController::class, 'destroySupplement'])->name('admin.menu.supplements.destroy');
-    Route::get('/menu/voirmenu/supplements', [MenuController::class, 'indexSupplements'])->name('admin.menu.supplements.index');
+    Route::get('/supplements', [MenuController::class, 'indexSupplements'])->name('admin.menu.supplements.index');
 
     // إضافة مسار لعرض قائمة
 
 });
-
