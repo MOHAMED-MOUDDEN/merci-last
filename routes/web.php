@@ -40,15 +40,15 @@ Route::get('/clientBlog/search', [App\Http\Controllers\clientBlog::class, 'searc
 Route::get('/blog_detailController/store', [App\Http\Controllers\blog_detailController::class, 'store'])->name('createComment');
 Route::get('/clientReservation/store', [App\Http\Controllers\clientReservation::class, 'store'])->name('createReservation');
 Route::get('/clientIndex/store', [App\Http\Controllers\clientIndex::class, 'store'])->name('createreservation');
-Route::get('/clientContact/store', [App\Http\Controllers\ClientContactController::class, 'store'])->name('createContact');
+Route::get('/clientContact/store', [App\Http\Controllers\ClientContactController::class, 'store'])->name('createContact')->middleware('admin');
 Route::get('/user/reservations/{id}', [App\Http\Controllers\UserController::class, 'reservations'])->name('reservations');
 Route::get('/user/profile/{id}', [App\Http\Controllers\UserController::class, 'profile'])->name('profile');
 Route::get('/user/contacts/{id}', [App\Http\Controllers\UserController::class, 'contacts'])->name('contacts');
 Route::get('/pannier/add/{id}', [App\Http\Controllers\pannierController::class, 'add'])->name('add_pannier');
-Route::get('/Coupon', [App\Http\Controllers\CouponController::class, 'index'])->name('coupon.index');
+Route::get('/Coupon', [App\Http\Controllers\CouponController::class, 'index'])->name('coupon.index')->middleware('admin');
 Route::delete('/Coupon/destroy/{id}', [App\Http\Controllers\CouponController::class, 'destroy'])->name('coupon.destroy');
-Route::get('/Coupon/create', [App\Http\Controllers\CouponController::class, 'store'])->name('coupon.create');
-Route::get('/Coupon/add', [App\Http\Controllers\CouponController::class, 'addCoupon'])->name('coupon.add');
+Route::get('/Coupon/create', [App\Http\Controllers\CouponController::class, 'store'])->name('coupon.create')->middleware('admin');
+Route::get('/Coupon/add', [App\Http\Controllers\CouponController::class, 'addCoupon'])->name('coupon.add')->middleware('admin');
 Route::get('/repas/specific', [App\Http\Controllers\RepasConroller::class, 'index_type'])->name('repa.type');
 
 Route::patch('/commande/Payée/{id}', [App\Http\Controllers\ComndController::class, 'payee'])->name('comnd.payee');
@@ -144,20 +144,20 @@ Route::post('/reservations', [ReservationController::class, 'store'])->name('res
 
 // المسارات العامة لشقق
 Route::get('/appartements', [AppartementController::class, 'index'])->name('appartement.index');
-Route::get('/appartements/create', [AppartementController::class, 'create'])->name('appartement.create');
-Route::post('/appartements/store', [AppartementController::class, 'store'])->name('appartement.store');
-Route::get('/appartements/{id}/edit', [AppartementController::class, 'edit'])->name('appartement.edit');
-Route::put('/appartements/{id}', [AppartementController::class, 'update'])->name('appartement.update');
-Route::delete('/appartements/{id}', [AppartementController::class, 'destroy'])->name('appartement.destroy');
+Route::get('/appartements/create', [AppartementController::class, 'create'])->name('appartement.create')->middleware('admin');
+Route::post('/appartements/store', [AppartementController::class, 'store'])->name('appartement.store')->middleware('admin');
+Route::get('/appartements/{id}/edit', [AppartementController::class, 'edit'])->name('appartement.edit')->middleware('admin');
+Route::put('/appartements/{id}', [AppartementController::class, 'update'])->name('appartement.update')->middleware('admin');
+Route::delete('/appartements/{id}', [AppartementController::class, 'destroy'])->name('appartement.destroy')->middleware('admin');
 
 // المسارات الخاصة بعرض الشقق في لوحة الإدارة
-Route::get('/admin/appartements', [AppartementController::class, 'adminRooms'])->name('admin.rooms.index');
-Route::get('/appartement/admin', [AppartementController::class, 'appartementAdmin'])->name('appartement.admin');
+Route::get('/admin/appartements', [AppartementController::class, 'adminRooms'])->name('admin.rooms.index')->middleware('admin');
+Route::get('/appartement/admin', [AppartementController::class, 'appartementAdmin'])->name('appartement.admin')->middleware('admin');
 
 // المسارات الإضافية للتحقق والعمليات الخاصة
 Route::get('/appartement/validation', [AppartementController::class, 'validation'])->name('appartement.validation');
 
-Route::post('/appartements/store', [AppartementController::class, 'store'])->name('appartements.store');
+Route::post('/appartements/store', [AppartementController::class, 'store'])->name('appartements.store')->middleware('admin');
 
 // المسارات المخصصة للتأكيد والعمليات الخاصة بالشقق
 Route::get('/appartement/validation/{id}', [AppartementController::class, 'validation'])->name('appartement.validation');
