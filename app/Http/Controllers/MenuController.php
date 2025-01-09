@@ -135,7 +135,7 @@ public function destroyPetitsDejeuner($id)
         $brunches = Brunch::all();
         return view('admin.menu.brunches.index', compact('brunches'));
     }
-    
+
     private function uploadImage(Request $request, $directory)
     {
         if ($request->hasFile('image')) {
