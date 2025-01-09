@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('brunches', function (Blueprint $table) {
-            $table->id();               // عمود id
+            $table->bigIncrements('id');  // أو يمكن استخدام bigint(20) unsigned إذا كان لديك إصدار MySQL أعلى
             $table->string('nom');       // اسم الطبق
             $table->text('description'); // وصف الطبق
             $table->string('image');     // رابط الصورة

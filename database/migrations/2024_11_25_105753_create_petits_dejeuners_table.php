@@ -14,7 +14,7 @@ class CreatePetitsDejeunersTable extends Migration
     public function up()
     {
         Schema::create('petits_dejeuners', function (Blueprint $table) {
-            $table->id(); // سيقوم بإنشاء عمود "id" كمفتاح رئيسي
+            $table->bigIncrements('id');  // أو يمكن استخدام bigint(20) unsigned إذا كان لديك إصدار MySQL أعلى
             $table->string('nom'); // اسم الـ Petit Dejeuner
             $table->text('description'); // وصف الـ Petit Dejeuner
             $table->string('image'); // مسار الصورة

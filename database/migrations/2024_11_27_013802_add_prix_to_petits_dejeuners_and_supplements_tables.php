@@ -1,26 +1,30 @@
 <?php
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class AddPrixToPetitsDejeunersAndSupplementsTables extends Migration
 {
     public function up()
     {
-        // إضافة عمود السعر إلى جدول petits_dejeuners
-        Schema::table('petits_dejeuners', function (Blueprint $table) {
-            $table->decimal('prix', 8, 2)->after('description')->nullable();
-        });
+        // تحقق إذا كان العمود غير موجود في جدول petits_dejeuners
+        if (!Schema::hasColumn('petits_dejeuners', 'prix')) {
+            Schema::table('petits_dejeuners', function (Blueprint $table) {
+                $table->decimal('prix', 8, 2)->nullable()->after('description');
+            });
+        }
 
-        // إضافة عمود السعر إلى جدول supplements
-        Schema::table('supplements', function (Blueprint $table) {
-            $table->decimal('prix', 8, 2)->after('description')->nullable();
-        });
+        // تحقق إذا كان العمود غير موجود في جدول supplements
+        if (!Schema::hasColumn('supplements', 'prix')) {
+            Schema::table('supplements', function (Blueprint $table) {
+                $table->decimal('prix', 8, 2)->nullable()->after('description');
+            });
+        }
     }
 
     public function down()
     {
-        // إزالة العمود عند التراجع
+        // إذا أردت الرجوع عن هذه التعديلات، قم بحذف العمود
         Schema::table('petits_dejeuners', function (Blueprint $table) {
             $table->dropColumn('prix');
         });
