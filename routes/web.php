@@ -169,9 +169,6 @@ Route::get('/menu/voirmenu', [MenuController::class, 'voirmenu'])->name('client.
 Route::prefix('admin/menu')->middleware('admin')->group(function () {
 
     // تصحيح التسمية
-    Route::resource('petits-dejeuners', MenuController::class);
-    Route::resource('supplements', MenuController::class);
-    Route::resource('brunches', MenuController::class);
 
     // مسارات إضافية لإدارة إنشاء وتخزين PetitsDejeuners
     Route::get('create-petits-dejeuner', [MenuController::class, 'createPetitsDejeuner'])->name('admin.menu.create-petits-dejeuner');
