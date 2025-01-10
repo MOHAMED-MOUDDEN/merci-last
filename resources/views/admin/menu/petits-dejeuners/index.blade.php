@@ -51,7 +51,7 @@ text-shadow: 0px 0 20px black;">
                     <td><img src="{{ secure_asset( $petitDejeuner->image) }}" alt="Image" width="100"></td>
 
                     <td class="action-buttons">
-                        <form action="{{ secure_url(route('petits-dejeuners.destroy', $petitDejeuner->id)) }}" method="POST" style="display: inline;">
+                        <form action="{{ route('admin.menu.petits-dejeuners.destroy', $petitDejeuner->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn delete">Supprimer</button>
