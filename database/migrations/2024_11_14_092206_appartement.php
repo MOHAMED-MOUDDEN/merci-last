@@ -16,7 +16,7 @@ return new class extends Migration
                 $table->id();
                 $table->string('nom');
                 $table->text('description')->nullable();
-                $table->string('image')->nullable();
+                $table->string('image')();
                 $table->float('prix');
                 $table->integer('etoiles')->default(3);
                 $table->string('extra_info')->nullable();
