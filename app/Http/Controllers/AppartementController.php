@@ -23,25 +23,28 @@ class AppartementController extends Controller
     // تخزين شقة جديدة في قاعدة البيانات
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'nom' => 'required|string|max:255',
-            'prenom' => 'nullable|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'prix' => 'required|numeric|min:0',
             'etoiles' => 'nullable|integer|min:1|max:5',
-            'extra_info' => 'nullable|string|max:500',
+            'extra_info' => 'nullable|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // رفع الصورة وتخزين المسار
-        $validatedData['image'] = $this->uploadImage($request, 'upload/photos');
+        $imagePath = $this->uploadImage($request, 'images/photos');
 
-        // إنشاء الشقة في قاعدة البيانات
-        CreateAppartement::create($validatedData);
+        CreateAppartement::create([
+            'nom' => $request->nom,
+            'description' => $request->description,
+            'prix' => $request->prix,
+            'etoiles' => $request->etoiles ?? 3,
+            'extra_info' => $request->extra_info,
+            'image' => $imagePath,
+        ]);
 
         return redirect()->route('appartement.index')->with('success', 'Appartement ajouté avec succès!');
     }
-
     // تعديل شقة موجودة
     public function edit($id)
     {

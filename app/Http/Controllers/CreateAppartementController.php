@@ -27,6 +27,8 @@ class CreateAppartementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    
+
     public function store(Request $request)
     {
         $request->validate([
@@ -35,10 +37,10 @@ class CreateAppartementController extends Controller
             'prix' => 'required|numeric|min:0',
             'etoiles' => 'nullable|integer|min:1|max:5',
             'extra_info' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $imagePath = $this->uploadImage($request, 'upload/photos');
+        $imagePath = $this->uploadImage($request, 'images/photos');
 
         CreateAppartement::create([
             'nom' => $request->nom,
@@ -51,7 +53,6 @@ class CreateAppartementController extends Controller
 
         return redirect()->route('appartement.index')->with('success', 'Appartement ajouté avec succès!');
     }
-
     /**
      * Show the form for editing the specified resource.
      */
