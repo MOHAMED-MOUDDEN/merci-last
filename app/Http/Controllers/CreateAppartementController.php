@@ -27,7 +27,7 @@ class CreateAppartementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    
+
 
     public function store(Request $request)
     {
@@ -83,7 +83,7 @@ class CreateAppartementController extends Controller
                 unlink(public_path($room->image));
             }
 
-            $room->image = $this->uploadImage($request, 'upload/photos');
+            $room->image = $this->uploadImage($request, 'images/photos');
         }
 
         $room->update([
@@ -126,4 +126,5 @@ class CreateAppartementController extends Controller
         }
         return null;
     }
+    
 }

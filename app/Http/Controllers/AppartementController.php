@@ -132,23 +132,15 @@ class AppartementController extends Controller
     }
 
     // رفع الصورة ومعالجة المسارات
-    private function uploadImage(Request $request, $directory, $existingImage = null)
+    private function uploadImage(Request $request, $directory)
     {
         if ($request->hasFile('image')) {
-            // حذف الصورة القديمة إذا كانت موجودة
-            if ($existingImage && file_exists(public_path($existingImage))) {
-                unlink(public_path($existingImage));
-            }
-
-            // رفع الصورة الجديدة
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path($directory), $imageName);
-
             return $directory . '/' . $imageName;
         }
-
-        // إذا لم تكن هناك صورة جديدة، ارجع إلى الصورة السابقة
-        return $existingImage;
+        return null;
     }
+
 }
