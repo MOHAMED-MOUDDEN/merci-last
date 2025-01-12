@@ -10,7 +10,7 @@ class AppartementController extends Controller
     // عرض جميع الشقق
     public function index()
     {
-        $rooms = CreateAppartement::all();
+        $rooms = Appartement::all();
         return view('appartement.index', compact('rooms'));
     }
 
@@ -34,7 +34,7 @@ class AppartementController extends Controller
 
         $imagePath = $this->uploadImage($request, 'images/photos');
 
-        CreateAppartement::create([
+        Appartement::create([
             'nom' => $request->nom,
             'description' => $request->description,
             'prix' => $request->prix,
@@ -48,7 +48,7 @@ class AppartementController extends Controller
     // تعديل شقة موجودة
     public function edit($id)
     {
-        $room = CreateAppartement::findOrFail($id);
+        $room = Appartement::findOrFail($id);
         return view('appartement.edit', compact('room'));
     }
 
@@ -64,7 +64,7 @@ class AppartementController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',  // Allowing image validation
         ]);
 
-        $room = CreateAppartement::findOrFail($id);
+        $room = Appartements::findOrFail($id);
 
         // Handle image upload if new image is provided
         if ($request->hasFile('image')) {
@@ -89,7 +89,7 @@ class AppartementController extends Controller
     // حذف شقة
     public function destroy($id)
     {
-        $room = CreateAppartement::findOrFail($id);
+        $room = Appartement::findOrFail($id);
 
         // حذف الصورة إذا كانت موجودة
         if ($room->image && file_exists(public_path($room->image))) {
@@ -112,7 +112,7 @@ class AppartementController extends Controller
     // عرض تفاصيل شقة مع التحقق من السعر
     public function Validation2($id)
     {
-        $room = CreateAppartement::findOrFail($id);
+        $room = Appartements::findOrFail($id);
         $price = $room->prix;
 
         return view('appartement.appartementValid', ['price' => $price]);
@@ -121,13 +121,13 @@ class AppartementController extends Controller
     // عرض جميع الشقق في لوحة الإدارة
     public function adminRooms()
     {
-        $rooms = CreateAppartement::all();
+        $rooms =Appartement::all();
         return view('admin.rooms.index', compact('rooms'));
     }
 
     public function appartementAdmin()
     {
-        $rooms = CreateAppartement::all();
+        $rooms = Appartement::all();
         return view('appartement.admin', compact('rooms'));
     }
 

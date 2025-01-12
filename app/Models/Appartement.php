@@ -8,7 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Appartement extends Model
 {
     use HasFactory;
-    protected $fillable = ["nom","prenom","email","adresse","ville","codePostal","telephone"];
+    protected $table = 'appartements';
 
 
+
+    protected $fillable = [
+        'nom',
+        'prenom',
+        'description',
+        'image',
+        'prix',
+        'etoiles',
+        'extra_info',
+    ];
 }
+
