@@ -9,8 +9,10 @@
     <h2 class="tit6 t-center" style="    font-size: 3rem;
     text-align: center;
     text-shadow: 0px 0 20px black;">
-Edit Appartement     </h2>
+        Edit Appartement
+    </h2>
     </section>
+
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -21,7 +23,7 @@ Edit Appartement     </h2>
         </div>
     @endif
 
-    <form action="{{ secure_url(route('appartement.update', $room->id) )}}" method="POST">
+    <form action="{{ secure_url(route('appartement.update', $room->id)) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -46,8 +48,13 @@ Edit Appartement     </h2>
         </div>
 
         <div class="mb-3">
-            <label for="image" class="form-label">Image (URL)</label>
-            <input type="text" class="form-control" id="image" name="image" value="{{ old('image', $room->image) }}">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" class="form-control" id="image" name="image">
+            @if ($room->image)
+                <div class="mt-2">
+                    <img src="{{ asset($room->image) }}" alt="Room Image" class="img-fluid" style="max-width: 200px;">
+                </div>
+            @endif
         </div>
 
         <div class="mb-3">
