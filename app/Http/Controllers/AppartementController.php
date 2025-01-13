@@ -64,7 +64,7 @@ class AppartementController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',  // Allowing image validation
         ]);
 
-        $room = Appartements::findOrFail($id);
+        $room = Appartement::findOrFail($id);
 
         // Handle image upload if new image is provided
         if ($request->hasFile('image')) {
@@ -112,7 +112,7 @@ class AppartementController extends Controller
     // عرض تفاصيل شقة مع التحقق من السعر
     public function Validation2($id)
     {
-        $room = Appartements::findOrFail($id);
+        $room = Appartement::findOrFail($id);
         $price = $room->prix;
 
         return view('appartement.appartementValid', ['price' => $price]);
