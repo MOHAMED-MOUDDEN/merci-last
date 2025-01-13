@@ -2,7 +2,7 @@
     <!-- Header desktop -->
     <div class="wrap-menu-header gradient1 trans-0-4">
         <div class="container h-full">
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center" style="margin-top:5% ">
                 <!-- Logo -->
                 <div class="logo desk">
                     <a href={{ route('clientIndex.index') }}><img src="clientpage/images/MERCI_IMG/logo_header/Logo-Merci-b3.png" alt="" width="100px"></a>

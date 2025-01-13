@@ -24,6 +24,7 @@
 
 <div class="container">
     <div class="title-section-ourmenu t-center m-b-22">
+        <br><br>
         <span class="tit2 t-center">Découvrir</span>
         <h3 class="tit5 t-center m-t-2">Notre Chambres</h3>
     </div>
