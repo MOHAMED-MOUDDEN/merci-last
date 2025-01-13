@@ -35,7 +35,7 @@
     <h2 class="tit6 t-center" style="    font-size: 3rem;
     text-align: center;
     text-shadow: 0px 0 20px black;">
-appartements     </h2>
+Appartements     </h2>
     </section>
     @if($rooms->isEmpty())
         <p>Aucun appartement enregistré.</p>

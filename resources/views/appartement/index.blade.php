@@ -8,7 +8,7 @@
 <section class="bg-title-page flex-c-m p-t-160 p-b-80 p-l-15 p-r-15"
     style="background-image: url(clientpage/images/bg-title-page-03.jpg);">
     <div style="display: flex; flex-direction: column; align-items: center;">
-        <h2 class="tit6 t-center">Restaurant</h2>
+        <h2 class="tit6 t-center">Hôtel</h2>
         <div class="mb-4">
             <img class="mercilogo-autre" src="clientpage/images/MERCI_IMG/LOGO/Logo-Merci-b1.png" alt="">
         </div>

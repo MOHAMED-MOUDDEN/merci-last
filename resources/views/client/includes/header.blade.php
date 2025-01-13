@@ -34,7 +34,7 @@
     </a>
     <ul class="dropdown-menu">
         <li><a href="{{ route('clientReservation.index') }}" class="dropdown-item">Restaurant</a></li>
-        <li><a href="{{ route('Apparetementindex') }}" class="dropdown-item">Appartement</a></li>
+        <li><a href="{{ route('Apparetementindex') }}" class="dropdown-item">Hôtel</a></li>
     </ul>
 </li>
 <style>
