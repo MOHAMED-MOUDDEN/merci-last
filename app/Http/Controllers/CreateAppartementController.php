@@ -118,13 +118,28 @@ class CreateAppartementController extends Controller
      */
     private function uploadImage(Request $request, $directory)
     {
+        // التحقق من وجود الصورة في الطلب
         if ($request->hasFile('image')) {
+            // التحقق من نوع وحجم الصورة
+            $request->validate([
+                'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            // الحصول على الصورة
             $image = $request->file('image');
+            // إنشاء اسم فريد للصورة
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path($directory), $imageName);
-            return $directory . '/' . $imageName;
+
+            // تخزين الصورة باستخدام دالة storeAs
+            $path = $image->storeAs($directory, $imageName, 'public');
+
+            // إرجاع المسار الذي تم تخزين الصورة فيه
+            return $path;
         }
+
+        // إذا لم تكن هناك صورة في الطلب، إرجاع null
         return null;
     }
-    
+
+
 }
