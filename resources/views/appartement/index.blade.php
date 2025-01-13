@@ -35,8 +35,9 @@
 
             @csrf
             <div class="card">
-                <img src="  {{ secure_asset( $room->image) }}" alt="{{ $room->nom }}">
-
+                <!-- تأكد من استخدام secure_asset مع المسار الصحيح للصورة -->
+                <img src="{{ secure_asset($room->image) }}" alt="{{ $room->nom }}">
+        
                                <div class="card-info">
                     <h3>{{ $room->nom }}</h3>
                     <p>{{ $room->description }}</p>
