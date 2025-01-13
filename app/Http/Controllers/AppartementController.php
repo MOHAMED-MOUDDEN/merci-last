@@ -131,40 +131,21 @@ class AppartementController extends Controller
         return view('appartement.admin', compact('rooms'));
     }
 
-    // رفع الصورة ومعالجة المسارات
-private function uploadImage(Request $request, $directory)
-{
-    // التحقق من وجود الصورة في الطلب
-    if ($request->hasFile('image')) {
-        // التحقق من نوع وحجم الصورة
-        $request->validate([
-            'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+    private function uploadImage(Request $request, $directory)
+    {
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-        // الحصول على الصورة
-        $image = $request->file('image');
+            // تخزين الصورة في مجلد storage/app/public بدلاً من public
+            $imagePath = $image->storeAs('public/' . $directory, $imageName);
 
-        // إنشاء اسم فريد للصورة
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-
-        // تخزين الصورة في مجلد public داخل مجلد images/photos
-        $path = public_path($directory);
-
-        // التأكد من أن المجلد موجود، إذا لم يكن موجودًا، يتم إنشاؤه
-        if (!file_exists($path)) {
-            mkdir($path, 0775, true); // 0775: صلاحيات الكتابة والقراءة
+            // إرجاع المسار الذي تم تخزين الصورة فيه داخل storage
+            return 'storage/' . $directory . '/' . $imageName;
         }
 
-        // نقل الصورة إلى المجلد المحدد
-        $image->move($path, $imageName);
-
-        // إرجاع المسار الذي تم تخزين الصورة فيه
-        return $directory . '/' . $imageName;
+        return null;
     }
-
-    // إذا لم تكن هناك صورة في الطلب، إرجاع null
-    return null;
-}
 
 
 }
