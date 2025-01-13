@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -32,6 +31,7 @@ class AppartementController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // رفع الصورة وتخزين المسار في قاعدة البيانات
         $imagePath = $this->uploadImage($request, 'images/photos');
 
         Appartement::create([
@@ -45,6 +45,7 @@ class AppartementController extends Controller
 
         return redirect()->route('appartement.index')->with('success', 'Appartement ajouté avec succès!');
     }
+
     // تعديل شقة موجودة
     public function edit($id)
     {
@@ -66,21 +67,21 @@ class AppartementController extends Controller
 
         $room = Appartement::findOrFail($id);
 
-        // Handle image upload if new image is provided
+        // إذا كانت الصورة جديدة، نقوم بتحميلها
         if ($request->hasFile('image')) {
-            // Delete the old image if exists
+            // حذف الصورة القديمة إذا كانت موجودة
             if ($room->image && file_exists(public_path($room->image))) {
                 unlink(public_path($room->image));
             }
 
-            // Upload the new image
-            $validatedData['image'] = $this->uploadImage($request, 'upload/photos');
+            // تحميل الصورة الجديدة
+            $validatedData['image'] = $this->uploadImage($request, 'images/photos');
         } else {
-            // If no new image provided, keep the old image
+            // إذا لم يكن هناك صورة جديدة، نحتفظ بالصورة القديمة
             $validatedData['image'] = $room->image;
         }
 
-        // Update the room record
+        // تحديث الشقة في قاعدة البيانات
         $room->update($validatedData);
 
         return redirect()->route('appartement.index')->with('success', 'Appartement mis à jour avec succès!');
@@ -121,7 +122,7 @@ class AppartementController extends Controller
     // عرض جميع الشقق في لوحة الإدارة
     public function adminRooms()
     {
-        $rooms =Appartement::all();
+        $rooms = Appartement::all();
         return view('admin.rooms.index', compact('rooms'));
     }
 
@@ -131,21 +132,20 @@ class AppartementController extends Controller
         return view('appartement.admin', compact('rooms'));
     }
 
+    // تحميل الصورة وتخزينها في مجلد التخزين المناسب
     private function uploadImage(Request $request, $directory)
     {
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-            // تخزين الصورة في مجلد storage/app/public بدلاً من public
-            $imagePath = $image->storeAs('public/' . $directory, $imageName);
+            // تخزين الصورة في مجلد public
+            $image->move(public_path($directory), $imageName);
 
-            // إرجاع المسار الذي تم تخزين الصورة فيه داخل storage
-            return 'storage/' . $directory . '/' . $imageName;
+            // إرجاع المسار الصحيح للصورة التي تم تخزينها
+            return $directory . '/' . $imageName;
         }
 
         return null;
     }
-
-
 }
