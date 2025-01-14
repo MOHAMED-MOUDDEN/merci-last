@@ -24,5 +24,10 @@ class RoomReservationController extends Controller
 
         return redirect()->route('rooms.index')->with('success', 'تم حجز الغرفة بنجاح!');
     }
+    public function create($id)
+{
+    return view('user.rooms.reserve', compact('id'));
+}
+
 
 }
