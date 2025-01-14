@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Models\RoomImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
@@ -28,19 +29,30 @@ class RoomController extends Controller
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'additional_info' => 'nullable|string',
-            'images.*' => 'image|max:2048'
+            'images.*' => 'image|max:2048', // الصور يجب أن تكون أقل من 2 ميجابايت
         ]);
 
-        $room = Room::create($validated);
+        // إنشاء الغرفة
+        $room = Room::create([
+            'name' => $validated['name'],
+            'stars' => $validated['stars'],
+            'price' => $validated['price'],
+            'description' => $validated['description'] ?? null,
+            'additional_info' => $validated['additional_info'] ?? null,
+        ]);
 
-        if ($request->has('images')) {
+        // رفع الصور إن وجدت
+        if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $path = $image->store('room_images', 'public');
-                RoomImage::create(['room_id' => $room->id, 'image_path' => $path]);
+                RoomImage::create([
+                    'room_id' => $room->id,
+                    'image_path' => $path,
+                ]);
             }
         }
 
-        return redirect()->route('admin.rooms.index')->with('success', 'Room created successfully.');
+        return redirect()->route('rooms.index')->with('success', 'Room created successfully.');
     }
 
     public function edit($id)
@@ -57,27 +69,46 @@ class RoomController extends Controller
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'additional_info' => 'nullable|string',
-            'images.*' => 'image|max:2048'
+            'images.*' => 'image|max:2048',
         ]);
 
+        // تحديث الغرفة
         $room = Room::findOrFail($id);
-        $room->update($validated);
+        $room->update([
+            'name' => $validated['name'],
+            'stars' => $validated['stars'],
+            'price' => $validated['price'],
+            'description' => $validated['description'] ?? null,
+            'additional_info' => $validated['additional_info'] ?? null,
+        ]);
 
-        if ($request->has('images')) {
+        // رفع الصور الجديدة إن وجدت
+        if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $path = $image->store('room_images', 'public');
-                RoomImage::create(['room_id' => $room->id, 'image_path' => $path]);
+                RoomImage::create([
+                    'room_id' => $room->id,
+                    'image_path' => $path,
+                ]);
             }
         }
 
-        return redirect()->route('admin.rooms.index')->with('success', 'Room updated successfully.');
+        return redirect()->route('rooms.index')->with('success', 'Room updated successfully.');
     }
 
     public function destroy($id)
     {
         $room = Room::findOrFail($id);
+
+        // حذف الصور المرتبطة
+        foreach ($room->images as $image) {
+            Storage::disk('public')->delete($image->image_path);
+            $image->delete();
+        }
+
+        // حذف الغرفة
         $room->delete();
 
-        return redirect()->route('admin.rooms.index')->with('success', 'Room deleted successfully.');
+        return redirect()->route('rooms.index')->with('success', 'Room deleted successfully.');
     }
 }

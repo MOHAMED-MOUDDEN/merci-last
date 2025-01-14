@@ -20,7 +20,9 @@
     <div class="row">
         @foreach($room->images as $image)
         <div class="col-md-4">
-            <img src="{{ asset('storage/' . $image->image_path) }}" class="img-fluid" alt="{{ $room->name }}">
+
+            <img src="{{ $room->image_path }}" alt="Room Image">
+
         </div>
         @endforeach
     </div>

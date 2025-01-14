@@ -201,5 +201,5 @@ Route::prefix('rooms')->name('rooms.')->group(function () {
     Route::get('/{id}', [App\Http\Controllers\User\RoomController::class, 'show'])->name('show');
 });
 Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('rooms', App\Http\Controllers\Admin\RoomController::class);
+    Route::resource('', App\Http\Controllers\Admin\RoomController::class);
 });
