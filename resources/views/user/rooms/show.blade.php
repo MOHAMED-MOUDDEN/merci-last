@@ -24,5 +24,10 @@
         </div>
         @endforeach
     </div>
+
+    <!-- زر الحجز -->
+    <div class="mt-4">
+        <a href="{{ route('rooms.reserve', $room->id) }}" class="btn btn-success">احجز الآن</a>
+    </div>
 </div>
 @endsection

@@ -1,5 +1,4 @@
 <?php
-use App\Http\Controllers\Admin\RoomController;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\blog_detailController;
@@ -34,6 +33,9 @@ use App\Http\Controllers\CreateAppartementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\RoomReservationController;
+use App\Http\Controllers\Admin\RoomController;
+
 
 
 
@@ -206,5 +208,9 @@ Route::prefix('rooms')->name('rooms.')->group(function () {
 Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('rooms', RoomController::class);
 });
+
+Route::post('/room-reservations', [RoomReservationController::class, 'store'])->name('room-reservations.store');
+Route::get('/rooms/{id}/reserve', [RoomReservationController::class, 'create'])->name('rooms.reserve');
+
 
 
