@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\Admin\RoomController;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\blog_detailController;
@@ -200,6 +201,10 @@ Route::prefix('rooms')->name('rooms.')->group(function () {
     Route::get('/', [App\Http\Controllers\User\RoomController::class, 'index'])->name('index');
     Route::get('/{id}', [App\Http\Controllers\User\RoomController::class, 'show'])->name('show');
 });
+
+
 Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('', App\Http\Controllers\Admin\RoomController::class);
+    Route::resource('rooms', RoomController::class);
 });
+
+
