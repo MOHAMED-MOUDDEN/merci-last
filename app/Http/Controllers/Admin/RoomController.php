@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Models\RoomImage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
@@ -44,7 +43,8 @@ class RoomController extends Controller
         // رفع الصور إن وجدت
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('room_images', 'public');
+                $path = 'room_images/' . $image->getClientOriginalName();
+                $image->move(public_path('room_images'), $image->getClientOriginalName());
                 RoomImage::create([
                     'room_id' => $room->id,
                     'image_path' => $path,
@@ -85,7 +85,8 @@ class RoomController extends Controller
         // رفع الصور الجديدة إن وجدت
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('room_images', 'public');
+                $path = 'room_images/' . $image->getClientOriginalName();
+                $image->move(public_path('room_images'), $image->getClientOriginalName());
                 RoomImage::create([
                     'room_id' => $room->id,
                     'image_path' => $path,
@@ -102,7 +103,9 @@ class RoomController extends Controller
 
         // حذف الصور المرتبطة
         foreach ($room->images as $image) {
-            Storage::disk('public')->delete($image->image_path);
+            if (file_exists(public_path($image->image_path))) {
+                unlink(public_path($image->image_path));
+            }
             $image->delete();
         }
 
