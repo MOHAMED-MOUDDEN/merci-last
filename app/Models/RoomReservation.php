@@ -16,7 +16,6 @@ class RoomReservation extends Model
         'heure',
         'gens',
         'phone',
-        'view',
     ];
     public function create($id)
 {
