@@ -8,9 +8,11 @@ class RemoveViewFromRoomsTable extends Migration
 {
     public function up()
     {
-        Schema::table('rooms', function (Blueprint $table) {
-            $table->dropColumn('view');
-        });
+        if (Schema::hasColumn('rooms', 'view')) {
+            Schema::table('rooms', function (Blueprint $table) {
+                $table->dropColumn('view');
+            });
+        }
     }
 
     public function down()
@@ -19,4 +21,6 @@ class RemoveViewFromRoomsTable extends Migration
             $table->string('view')->nullable();
         });
     }
+
+
 }

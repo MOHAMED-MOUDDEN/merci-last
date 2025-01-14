@@ -19,7 +19,6 @@ return new class extends Migration
             $table->time('heure'); // وقت الحجز
             $table->integer('gens'); // عدد الأشخاص
             $table->string('phone'); // رقم الهاتف
-            $table->string('view'); // نوع الفيو (مثلاً بحر أو جبل)
             $table->timestamps(); // توقيت الإنشاء والتحديث
         });
     }
