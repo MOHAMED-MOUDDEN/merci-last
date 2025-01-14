@@ -21,7 +21,7 @@
         @foreach($room->images as $image)
         <div class="col-md-4">
 
-            <img src="{{ $room->image_path }}" alt="Room Image">
+            <img src="{{asset($room->image_path) }}" alt="Room Image">
 
         </div>
         @endforeach
