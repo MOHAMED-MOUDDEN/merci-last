@@ -196,3 +196,10 @@ Route::prefix('admin/menu')->middleware('admin')->group(function () {
     // إضافة مسار لعرض قائمة
 
 });
+Route::prefix('rooms')->name('rooms.')->group(function () {
+    Route::get('/', [App\Http\Controllers\User\RoomController::class, 'index'])->name('index');
+    Route::get('/{id}', [App\Http\Controllers\User\RoomController::class, 'show'])->name('show');
+});
+Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('rooms', App\Http\Controllers\Admin\RoomController::class);
+});
