@@ -65,7 +65,8 @@ Appartements     </h2>
                                 ⭐
                             @endfor
                         </td>
-                        <td><img src="{{ $room->image }}" alt="img"> </td>
+                        <td><img src="{{ $room->image }}" alt="img">,<img src="{{ asset($room->image) }}" alt="Room Image">
+                        </td>
 
                         <td>
                             <!-- Liens pour les actions comme modifier et supprimer -->

@@ -8,9 +8,7 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 # إعدادات لتحسين الأداء والأمان
 <IfModule mod_headers.c>
     # تمكين التخزين المؤقت للمتصفح
-    <FilesMatch "\.(jpg|jpeg|png|gif|css|js|ico|webp|woff|woff2|ttf|svg)$">
-        Header set Cache-Control "max-age=604800, public"  # تخزين لمدة أسبوع
-    </FilesMatch>
+
     <IfModule mod_php7.c>
     php_value upload_max_filesize 100M
     php_value post_max_size 120M
