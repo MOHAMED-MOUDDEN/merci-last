@@ -20,80 +20,77 @@ class AppartementController extends Controller
         return view('appartement.create');
     }
 
-    // تخزين شقة جديدة في قاعدة البيانات
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nom' => 'required|string|max:255',
-            'description' => 'required|string',
-            'prix' => 'required|numeric|min:0',
-            'etoiles' => 'nullable|integer|min:1|max:5',
-            'extra_info' => 'nullable|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+   // في دالة store
+public function store(Request $request)
+{
+    $request->validate([
+        'nom' => 'required|string|max:255',
+        'description' => 'required|string',
+        'prix' => 'required|numeric|min:0',
+        'etoiles' => 'nullable|integer|min:1|max:5',
+        'extra_info' => 'nullable|string|max:255',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        // رفع الصورة وتخزين المسار
-        $image = $request->file('image');
-        $imageName = uniqid() . $image->getClientOriginalName();
-        $image->move(public_path('upload/photos'), $imageName);
+    // رفع الصورة وتخزين المسار باستخدام الدالة المشتركة
+    $imagePath = $this->uploadImage($request, 'upload/photos');
 
-        Appartement::create([
-            'nom' => $request->nom,
-            'description' => $request->description,
-            'prix' => $request->prix,
-            'etoiles' => $request->etoiles ?? 3,
-            'extra_info' => $request->extra_info,
-            'image' => 'upload/photos/' . $imageName,
-        ]);
+    Appartement::create([
+        'nom' => $request->nom,
+        'description' => $request->description,
+        'prix' => $request->prix,
+        'etoiles' => $request->etoiles ?? 3,
+        'extra_info' => $request->extra_info,
+        'image' => $imagePath,
+    ]);
 
-        return redirect()->route('appartement.index')->with('success', 'Appartement ajouté avec succès!');
-    }
+    return redirect()->route('appartement.index')->with('success', 'Appartement ajouté avec succès!');
+}
 
-    // تعديل شقة موجودة
-    public function edit($id)
-    {
-        $room = Appartement::findOrFail($id);
-        return view('appartement.edit', compact('room'));
-    }
+// في دالة update
+public function update(Request $request, $id)
+{
+    $room = Appartement::findOrFail($id);
 
-    // تحديث الشقة في قاعدة البيانات
-    public function update(Request $request, $id)
-    {
-        $room = Appartement::findOrFail($id);
+    $request->validate([
+        'nom' => 'required|string|max:255',
+        'description' => 'required|string',
+        'prix' => 'required|numeric|min:0',
+        'etoiles' => 'nullable|integer|min:1|max:5',
+        'extra_info' => 'nullable|string|max:500',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        $request->validate([
-            'nom' => 'required|string|max:255',
-            'description' => 'required|string',
-            'prix' => 'required|numeric|min:0',
-            'etoiles' => 'nullable|integer|min:1|max:5',
-            'extra_info' => 'nullable|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        // تحديث الصورة إذا تم رفع صورة جديدة
-        if ($request->hasFile('image')) {
-            // حذف الصورة القديمة إذا كانت موجودة
-            if ($room->image && file_exists(public_path($room->image))) {
-                unlink(public_path($room->image));
-            }
-
-            $image = $request->file('image');
-            $imageName = uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('upload/photos'), $imageName);
-
-            $room->image = 'upload/photos/' . $imageName;
+    // تحديث الصورة إذا تم رفع صورة جديدة
+    if ($request->hasFile('image')) {
+        // حذف الصورة القديمة إذا كانت موجودة
+        if ($room->image && file_exists(public_path($room->image))) {
+            unlink(public_path($room->image));
         }
 
-        $room->update([
-            'nom' => $request->nom,
-            'description' => $request->description,
-            'prix' => $request->prix,
-            'etoiles' => $request->etoiles ?? 3,
-            'extra_info' => $request->extra_info,
-        ]);
+        // رفع الصورة الجديدة باستخدام الدالة المشتركة
+        $imagePath = $this->uploadImage($request, 'upload/photos');
 
-        return redirect()->route('appartement.index')->with('success', 'Appartement mis à jour avec succès!');
+        // تحديث المسار الجديد للصورة
+        $room->image = $imagePath;
     }
+
+    $room->update([
+        'nom' => $request->nom,
+        'description' => $request->description,
+        'prix' => $request->prix,
+        'etoiles' => $request->etoiles ?? 3,
+        'extra_info' => $request->extra_info,
+    ]);
+
+    return redirect()->route('appartement.index')->with('success', 'Appartement mis à jour avec succès!');
+}
+ // تعديل شقة موجودة
+ public function edit($id)
+ {
+     $room = Appartement::findOrFail($id);
+     return view('appartement.edit', compact('room'));
+ }
 
     // حذف شقة
     public function destroy($id)
