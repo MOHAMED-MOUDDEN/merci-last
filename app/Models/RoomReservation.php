@@ -9,13 +9,7 @@ class RoomReservation extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'nom',
-        'email',
-        'date',
-        'heure',
-        'gens',
-        'phone',
-        'room_id',  // يجب إضافة 'room_id' هنا لأنه يتم استخدامه في الطلب
+        'nom', 'email', 'date', 'heure', 'gens', 'phone', 'room_id', 'price', 'created_at', 'updated_at'
     ];
     public function room()
     {

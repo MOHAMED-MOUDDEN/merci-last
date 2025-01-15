@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>حجز الغرفة: {{ $room->name }}</h1>
-<br><br><br><br>
+    <br><br><br><br>
     <p><strong>السعر:</strong> {{ $room->price }} درهم</p>
     <p><strong>عدد الأشخاص المسموح:</strong> {{ $room->capacity }}</p>
     <p><strong>الوصف:</strong> {{ $room->description }}</p>
@@ -12,6 +12,7 @@
     <form action="{{ route('room-reservations.store') }}" method="POST">
         @csrf
         <input type="hidden" name="room_id" value="{{ $room->id }}">
+        <input type="hidden" name="price" value="{{ $room->price }}">  <!-- إضافة حقل الثمن بشكل مخفي -->
 
         <div class="mb-3">
             <label for="nom" class="form-label">الاسم الكامل</label>
