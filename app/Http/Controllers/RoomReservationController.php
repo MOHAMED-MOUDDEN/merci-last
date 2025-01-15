@@ -16,7 +16,6 @@ class RoomReservationController extends Controller
             'heure' => 'required',
             'gens' => 'required|integer',
             'phone' => 'required|string|max:15',
-            'view' => 'required|string',
             'room_id' => 'required|exists:rooms,id',
         ]);
 
