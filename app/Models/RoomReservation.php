@@ -17,5 +17,9 @@ class RoomReservation extends Model
         'phone',
         'room_id',  // يجب إضافة 'room_id' هنا لأنه يتم استخدامه في الطلب
     ];
- 
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
+
 }
