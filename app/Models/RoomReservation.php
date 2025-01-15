@@ -17,11 +17,5 @@ class RoomReservation extends Model
         'phone',
         'room_id',  // يجب إضافة 'room_id' هنا لأنه يتم استخدامه في الطلب
     ];
-    public function create($id)
-{
-    $room = Room::findOrFail($id);
-
-    return view('rooms.reserve', compact('room'));
-}
-
+ 
 }
