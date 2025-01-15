@@ -38,7 +38,10 @@
 Appartements     </h2>
     </section>
     @if($rooms->isEmpty())
+    <button class="btn btn-primary btn-sm" ><a href="/appartements/create"class="btn btn-primary">Ajouter un appartement</a></button>
+
         <p>Aucun appartement enregistré.</p>
+
     @else
     <button class="btn btn-primary btn-sm" ><a href="/appartements/create"class="btn btn-primary">Ajouter un appartement</a></button>
         <table class="table">
@@ -65,7 +68,7 @@ Appartements     </h2>
                                 ⭐
                             @endfor
                         </td>
-                        <td><img src="{{ $room->image }}" alt="img">,<img src="{{ asset($room->image) }}" alt="Room Image">
+                        <td><img src="{{ $room->image }}" alt="img">
                         </td>
 
                         <td>
