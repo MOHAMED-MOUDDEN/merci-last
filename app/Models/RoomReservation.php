@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RoomReservation extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'nom',
         'email',
@@ -16,6 +15,7 @@ class RoomReservation extends Model
         'heure',
         'gens',
         'phone',
+        'room_id',  // يجب إضافة 'room_id' هنا لأنه يتم استخدامه في الطلب
     ];
     public function create($id)
 {

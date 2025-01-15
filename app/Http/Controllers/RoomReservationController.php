@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\RoomReservation;
@@ -17,7 +16,7 @@ class RoomReservationController extends Controller
             'heure' => 'required',
             'gens' => 'required|integer',
             'phone' => 'required|string|max:15',
-            'room_id' => 'required|exists:rooms,id',
+            'room_id' => 'required|exists:rooms,id',  // تأكد من وجود room_id في الطلب
         ]);
 
         // إنشاء حجز جديد باستخدام البيانات الصحيحة
@@ -35,6 +34,4 @@ class RoomReservationController extends Controller
         // عرض صفحة الحجز مع بيانات الغرفة
         return view('user.rooms.reserve', compact('room'));
     }
-
-
 }
