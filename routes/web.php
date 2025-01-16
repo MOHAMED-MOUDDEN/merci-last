@@ -214,3 +214,6 @@ Route::get('/rooms/{id}/reserve', [RoomReservationController::class, 'create'])-
 
 
 
+Route::get('/upload/{any}', function () {
+    return abort(404);
+})->where('any', '.*');

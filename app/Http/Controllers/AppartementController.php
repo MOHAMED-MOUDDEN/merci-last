@@ -31,6 +31,7 @@ public function store(Request $request)
         'extra_info' => 'nullable|string|max:255',
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
+    
 
     // رفع الصورة وتخزين المسار باستخدام الدالة المشتركة
     $imagePath = $this->uploadImage($request, 'upload/photos');
@@ -68,7 +69,7 @@ public function update(Request $request, $id)
             unlink(public_path($room->image));
         }
 
-        // رفع الصورة الجديدة باستخدام الدالة المشتركة
+        // رفع الصورة الجديدة
         $imagePath = $this->uploadImage($request, 'images/supplements');
 
         // تحديث المسار الجديد للصورة
