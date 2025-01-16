@@ -69,7 +69,7 @@ public function update(Request $request, $id)
         }
 
         // رفع الصورة الجديدة باستخدام الدالة المشتركة
-        $imagePath = $this->uploadImage($request, 'upload/photos');
+        $imagePath = $this->uploadImage($request, 'images/supplements');
 
         // تحديث المسار الجديد للصورة
         $room->image = $imagePath;
