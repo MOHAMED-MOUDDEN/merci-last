@@ -126,10 +126,13 @@ class AppartementController extends Controller
     {
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path($directory), $imageName);
-            return $directory . '/' . $imageName;
+            $imageName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $imageExtension = $image->getClientOriginalExtension();
+            $finalImageName = $imageName . '_' . time() . '.' . $imageExtension;
+            $image->move(public_path($directory), $finalImageName);
+            return $directory . '/' . $finalImageName;
         }
         return null;
     }
+
 }
