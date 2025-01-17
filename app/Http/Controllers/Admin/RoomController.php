@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Models\RoomImage;
 use Illuminate\Http\Request;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class RoomController extends Controller
 {
@@ -40,14 +41,21 @@ class RoomController extends Controller
             'additional_info' => $validated['additional_info'] ?? null,
         ]);
 
-        // رفع الصور إن وجدت
+        // رفع الصور إلى Cloudinary إن وجدت
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = 'room_images/' . $image->getClientOriginalName();
-                $image->move(public_path('room_images'), $image->getClientOriginalName());
+                // رفع الصورة إلى Cloudinary
+                $uploadedImage = Cloudinary::upload($image->getRealPath(), [
+                    'folder' => 'room_images'
+                ]);
+
+                // الحصول على الرابط الآمن للصورة
+                $imageUrl = $uploadedImage->getSecurePath();
+
+                // تخزين رابط الصورة في قاعدة البيانات
                 RoomImage::create([
                     'room_id' => $room->id,
-                    'image_path' => $path,
+                    'image_path' => $imageUrl,
                 ]);
             }
         }
@@ -82,14 +90,21 @@ class RoomController extends Controller
             'additional_info' => $validated['additional_info'] ?? null,
         ]);
 
-        // رفع الصور الجديدة إن وجدت
+        // رفع الصور الجديدة إلى Cloudinary إن وجدت
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = 'room_images/' . $image->getClientOriginalName();
-                $image->move(public_path('room_images'), $image->getClientOriginalName());
+                // رفع الصورة إلى Cloudinary
+                $uploadedImage = Cloudinary::upload($image->getRealPath(), [
+                    'folder' => 'room_images'
+                ]);
+
+                // الحصول على الرابط الآمن للصورة
+                $imageUrl = $uploadedImage->getSecurePath();
+
+                // تخزين رابط الصورة في قاعدة البيانات
                 RoomImage::create([
                     'room_id' => $room->id,
-                    'image_path' => $path,
+                    'image_path' => $imageUrl,
                 ]);
             }
         }
@@ -101,11 +116,10 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($id);
 
-        // حذف الصور المرتبطة
+        // حذف الصور المرتبطة من Cloudinary
         foreach ($room->images as $image) {
-            if (file_exists(public_path($image->image_path))) {
-                unlink(public_path($image->image_path));
-            }
+            $publicId = basename($image->image_path, '.' . pathinfo($image->image_path, PATHINFO_EXTENSION));
+            Cloudinary::destroy($publicId); // حذف الصورة من Cloudinary
             $image->delete();
         }
 
