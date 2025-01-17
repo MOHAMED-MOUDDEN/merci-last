@@ -33,7 +33,8 @@ class AppartementController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $imagePath = $this->uploadImage($request, 'images/appartements');
+        $imagePath = $this->uploadImage($request, 'images/brunches');
+
 
         Appartement::create([
             'nom' => $request->nom,
@@ -69,7 +70,8 @@ class AppartementController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $imagePath = $this->uploadImage($request, 'images/appartements');
+            $imagePath = $this->uploadImage($request, 'images/brunches');
+
             $room->update(['image' => $imagePath]);
         }
 
