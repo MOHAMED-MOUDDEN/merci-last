@@ -125,8 +125,8 @@ class AppartementController extends Controller
     }
 
     // تحميل الصورة وتخزينها في مجلد التخزين المناسب
- 
-private function uploadImage(Request $request, $directory)
+
+ function uploadImage(Request $request, $directory)
 {
     if ($request->hasFile('image')) {
         $image = $request->file('image');
