@@ -36,15 +36,13 @@ class AppartementController extends Controller
         ]);
 
         $imagePath = $this->uploadImage($request, 'images/brunches');
-
-
         Appartement::create([
             'nom' => $request->nom,
             'description' => $request->description,
             'prix' => $request->prix,
             'etoiles' => $request->etoiles ?? 3,
             'extra_info' => $request->extra_info,
-            'image' => $imagePath,
+            'image' => $imagePath, // تخزين الرابط في قاعدة البيانات
         ]);
 
         return redirect()->route('appartement.index')->with('success', 'Appartement ajouté avec succès!');
@@ -73,10 +71,9 @@ class AppartementController extends Controller
 
         if ($request->hasFile('image')) {
             $imagePath = $this->uploadImage($request, 'images/brunches');
-          //  $image_path = '/mnt/data/assets/image/utilisateurs/';
-
-            $room->update(['image' => $imagePath]);
+            $room->update(['image' => $imagePath]); // تحديث رابط الصورة في قاعدة البيانات
         }
+
 
         $room->update([
             'nom' => $request->nom,
@@ -128,17 +125,18 @@ class AppartementController extends Controller
     }
 
     // تحميل الصورة وتخزينها في مجلد التخزين المناسب
-    public function uploadImage(Request $request)
-    {
-        if ($request->hasFile('img')) {
-            $user_img = $request->file('img');
-            $image_url = Cloudinary::upload($user_img->getRealPath(), [
-                'folder' => 'assets/image/utilisateurs/'
-            ])->getSecurePath();
+   // تحميل الصورة وتخزينها في مجلد التخزين المناسب
+public function uploadImage(Request $request, $folder)
+{
+    if ($request->hasFile('image')) {
+        $user_img = $request->file('image');
+        $image_url = Cloudinary::upload($user_img->getRealPath(), [
+            'folder' => $folder
+        ])->getSecurePath();
 
-            // حفظ الرابط في قاعدة البيانات
-            $user->img = $image_url;
-            $user->save();
-        }
+        return $image_url; // إعادة الرابط ليتم تخزينه في قاعدة البيانات
     }
+    return null; // في حال لم يتم رفع صورة
+}
+
 }
