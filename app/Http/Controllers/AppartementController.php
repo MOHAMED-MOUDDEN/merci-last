@@ -125,17 +125,17 @@ class AppartementController extends Controller
     }
 
     // تحميل الصورة وتخزينها في مجلد التخزين المناسب
-    private function uploadImage(Request $request, $directory)
-    {
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $randomHash = Str::random(40); // تسمية الصورة بتنسيق عشوائي
-            $imageExtension = $image->getClientOriginalExtension();
-            $finalImageName = $randomHash . '.' . $imageExtension;
-            $image->move(public_path($directory), $finalImageName);
-            return $directory . '/' . $finalImageName;
-        }
-        return null;
+ public function uploadImage(Request $request, $path)
+{
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path($path), $imageName);
+
+        return $path . '/' . $imageName;
     }
+
+    return null;
+}
 
 }
