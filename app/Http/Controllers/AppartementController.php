@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Appartement;
+use Illuminate\Support\Str;
 
 class AppartementController extends Controller
 {
@@ -126,9 +127,9 @@ class AppartementController extends Controller
     {
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $randomHash = Str::random(40); // تسمية الصورة بتنسيق عشوائي
             $imageExtension = $image->getClientOriginalExtension();
-            $finalImageName = $imageName . '_' . time() . '.' . $imageExtension;
+            $finalImageName = $randomHash . '.' . $imageExtension;
             $image->move(public_path($directory), $finalImageName);
             return $directory . '/' . $finalImageName;
         }
