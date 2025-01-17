@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\URL;
+use App\View\Components\Icon;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,9 +25,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFour();
 
-            if (config('app.env') === 'production') {
-                URL::forceScheme('https');
-            }
+
+   
+            Blade::component('icon', Icon::class);
+     
+        
     }
 
 

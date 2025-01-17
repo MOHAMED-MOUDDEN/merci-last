@@ -38,6 +38,8 @@ use App\Http\Controllers\Admin\RoomController;
 
 use Illuminate\Support\Facades\Artisan;
 
+Route::post('/rooms/{id}/book', [RoomController::class, 'book'])->name('rooms.book');
+
 
 
 Route::get('/clientBlog/search', [App\Http\Controllers\clientBlog::class, 'search'])->name('search');

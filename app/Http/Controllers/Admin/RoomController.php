@@ -128,4 +128,15 @@ class RoomController extends Controller
 
         return redirect()->route('rooms.index')->with('success', 'Room deleted successfully.');
     }
+    public function show($id)
+    {
+        // الحصول على الغرفة مع الصور المرتبطة بها
+        $room = Room::with('images')->findOrFail($id);
+        
+        // تحديد الصورة المختارة، يمكنك ضبط القيمة هنا أو تعيينها من جافا سكريبت
+        $selectedImage = 0;
+
+        // إرسال البيانات إلى العرض
+        return view('user.rooms.show', compact('room', 'selectedImage'));
+    }
 }
