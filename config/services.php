@@ -30,5 +30,10 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+'cloudinary' => [
+    'cloud_name' => env('CLOUDINARY_CLOUD_NAME', 'divk85kwd'),
+    'api_key' => env('CLOUDINARY_API_KEY', 'I8W6M6NyB6N8r9fRb2UJzrnqC4M'),
+    'api_secret' => env('CLOUDINARY_API_SECRET', 'your_api_secret'),
+],
 
 ];

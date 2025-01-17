@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+
 
 use Illuminate\Http\Request;
 use App\Models\Appartement;
@@ -71,6 +73,7 @@ class AppartementController extends Controller
 
         if ($request->hasFile('image')) {
             $imagePath = $this->uploadImage($request, 'images/brunches');
+          //  $image_path = '/mnt/data/assets/image/utilisateurs/';
 
             $room->update(['image' => $imagePath]);
         }
@@ -125,16 +128,17 @@ class AppartementController extends Controller
     }
 
     // تحميل الصورة وتخزينها في مجلد التخزين المناسب
-    function uploadImage(Request $request, $directory)
+    public function uploadImage(Request $request)
     {
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $hash = Str::random(10); // إنشاء سلسلة عشوائية مكونة من 10 أحرف
-            $imageName = time() . '_' . $hash . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path($directory), $imageName);
-            return $directory . '/' . $imageName;
-        }
-        return null;
-    }
+        if ($request->hasFile('img')) {
+            $user_img = $request->file('img');
+            $image_url = Cloudinary::upload($user_img->getRealPath(), [
+                'folder' => 'assets/image/utilisateurs/'
+            ])->getSecurePath();
 
+            // حفظ الرابط في قاعدة البيانات
+            $user->img = $image_url;
+            $user->save();
+        }
+    }
 }
