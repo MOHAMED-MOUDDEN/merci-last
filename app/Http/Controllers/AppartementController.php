@@ -32,7 +32,7 @@ class AppartementController extends Controller
             'prix' => 'required|numeric|min:0',
             'etoiles' => 'nullable|integer|min:1|max:5',
             'extra_info' => 'nullable|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240', // يزيد الحد إلى 10 ميجابايت
         ]);
 
         $imagePath = $this->uploadImage($request, 'images/brunches');
@@ -66,7 +66,8 @@ class AppartementController extends Controller
             'prix' => 'required|numeric|min:0',
             'etoiles' => 'nullable|integer|min:1|max:5',
             'extra_info' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240', // يزيد الحد إلى 10 ميجابايت
+
         ]);
 
         if ($request->hasFile('image')) {
