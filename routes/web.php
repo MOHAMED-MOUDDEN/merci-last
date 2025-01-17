@@ -36,6 +36,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\RoomReservationController;
 use App\Http\Controllers\Admin\RoomController;
 
+use Illuminate\Support\Facades\Artisan;
 
 
 
@@ -217,3 +218,8 @@ Route::get('/rooms/{id}/reserve', [RoomReservationController::class, 'create'])-
 Route::get('/upload/{any}', function () {
     return abort(404);
 })->where('any', '.*');
+
+Route::get('/link', function () {
+    Artisan::call('storage:link');
+    return 'The storage link has been created successfully!';
+});
