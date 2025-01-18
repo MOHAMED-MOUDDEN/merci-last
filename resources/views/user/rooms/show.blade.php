@@ -1,92 +1,115 @@
 @extends('client.layout')
 
 @section('content')
-<div class="container">
-<div class="min-h-screen bg-gray-100 px-4 py-8 md:px-8">
-    <div class="max-w-7xl mx-auto">
-        <div class="bg-white rounded-xl shadow-sm p-6 md:p-8">
-            <!-- Header Section -->
-            <div class="mb-6">
-                <span class="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-medium mb-3">
-                    Chambre Premium
-                </span>
-                <h1 class="text-3xl md:text-4xl font-semibold text-gray-900 mb-2">
-                    {{ $room->name }}
-                </h1>
-                <div class="flex items-center gap-2 text-gray-600">
+<style>
+    .carousel-item img {
+        object-fit: cover;
+        object-position: center center;
+    }
+    .img-thumbnail.active {
+        border: 2px solid #007bff;
+    }
+</style>
+
+<!-- Hero Section with Image Slider -->
+<div id="roomCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        @foreach($room->images as $index => $image)
+        <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+            <img src="{{ asset($image->image_path) }}" class="d-block w-100 rounded img-fluid" style="height: 600px; object-fit: cover;" alt="Room Image">
+        </div>
+        @endforeach
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#roomCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#roomCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- Thumbnail Images Below Slider -->
+<div class="d-flex justify-content-center gap-2 mb-5 thumbnails-container">
+    @foreach($room->images as $index => $image)
+    <img src="{{ asset($image->image_path) }}" onclick="selectSlide({{ $index }})" class="img-thumbnail {{ $index == 0 ? 'active' : '' }}" style="width: 100px; height: 80px; object-fit: cover; cursor: pointer;">
+    @endforeach
+</div>
+
+<div class="container py-5">
+    <div class="container bg-white p-4 rounded shadow-sm">
+        <div class="row">
+            <div class="col-md-8">
+                <h2 class="font-weight-bold">{{ $room->name }}</h2>
+                <div class="mb-3">
                     @for ($i = 0; $i < $room->stars; $i++)
-                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
+                        <i class="fas fa-star text-warning"></i>
                     @endfor
                 </div>
-            </div>
-
-            <!-- Image Gallery -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="relative aspect-video rounded-lg overflow-hidden">
-                    <img id="mainImage" src="{{ $room->images->first()->image_path ?? asset('images/default-room.jpg') }}" alt="Vue de la chambre" class="w-full h-full object-cover transition-opacity duration-300">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    @foreach ($room->images as $image)
-                        <div onclick="changeImage('{{ $image->image_path }}')" class="relative aspect-video rounded-lg overflow-hidden cursor-pointer">
-                            <img src="{{ $image->image_path }}" alt="Vue de la chambre" class="w-full h-full object-cover">
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Details Section -->
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="space-y-6">
-                    <div class="p-6 bg-gray-50 rounded-lg">
-                        <h2 class="text-xl font-semibold mb-4">Description</h2>
-                        <p class="text-gray-600 leading-relaxed">
-                            {{ $room->description }}
-                        </p>
+                <div class="card mb-4">
+                    <div class="card-header bg-light font-weight-bold">Description</div>
+                    <div class="card-body">
+                        <p>{{ $room->description }}</p>
                     </div>
-                    <div class="p-6 bg-gray-50 rounded-lg">
-                        <h2 class="text-xl font-semibold mb-4">Services inclus</h2>
-                        <div class="grid grid-cols-2 gap-4">
-                            @foreach (explode(',', $room->additional_info) as $info)
-                                <div class="flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="text-gray-600">{{ trim($info) }}</span>
-                                </div>
-                            @endforeach
+                </div>
+                <div class="card">
+                    <div class="card-header bg-light font-weight-bold">Services et Équipements</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 mb-2">
+                                <i class="fas fa-wifi text-primary"></i> Wi-Fi gratuit
+                            </div>
+                            <div class="col-6 mb-2">
+                                <i class="fas fa-glass-martini-alt text-primary"></i> Minibar
+                            </div>
+                            <div class="col-6 mb-2">
+                                <i class="fas fa-lock text-primary"></i> Coffre-fort
+                            </div>
+                            <div class="col-6 mb-2">
+                                <i class="fas fa-phone text-primary"></i> Service en chambre 24/7
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Pricing and Booking Section -->
-                <div>
-                    <div class="p-6 bg-gray-50 rounded-lg">
-                        <div class="mb-6">
-                            <h2 class="text-2xl font-semibold text-gray-900">
-                                {{ number_format($room->price, 2) }} MAD
-                                <span class="text-base font-normal text-gray-500"> / nuit</span>
-                            </h2>
-                        </div>
-                        <a href="{{ route('user.rooms.book', $room->id) }}" class="w-full block text-center bg-blue-600 text-white py-3 rounded-lg text-lg font-medium hover:bg-blue-700">
-                            Réserver maintenant
-                        </a>
-                        <p class="text-sm text-gray-500 text-center mt-4">
-                            Annulation gratuite jusqu'à 24h avant l'arrivée
-                        </p>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h3 class="font-weight-bold">{{ $room->price }} MAD <small class="text-muted">/ nuit</small></h3>
+                        <p class="text-muted">Taxes et frais inclus</p>
+                        <a href="{{ route('rooms.reserve', $room->id) }}" class="btn btn-primary btn-block mb-3">Réserver maintenant</a>
+                        <ul class="list-unstyled text-start">
+                            <li><i class="fas fa-check text-success"></i> Annulation gratuite jusqu'à 24h avant l'arrivée</li>
+                            <li><i class="fas fa-check text-success"></i> Paiement sécurisé</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
-<!-- Script to change the main image -->
+@endsection
+
+@section('scripts')
 <script>
-    function changeImage(src) {
-        document.getElementById('mainImage').src = src;
+    function updateThumbnails(activeIndex) {
+        const thumbnails = document.querySelectorAll('.img-thumbnail');
+        thumbnails.forEach((thumbnail, index) => {
+            thumbnail.classList.toggle('active', index === activeIndex);
+        });
+    }
+
+    document.getElementById('roomCarousel').addEventListener('slide.bs.carousel', function (event) {
+        updateThumbnails(event.to);
+    });
+
+    function selectSlide(index) {
+        const carousel = document.getElementById('roomCarousel');
+        const carouselInstance = bootstrap.Carousel.getInstance(carousel);
+        carouselInstance.to(index);
+        updateThumbnails(index);
     }
 </script>
 @endsection
