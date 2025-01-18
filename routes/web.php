@@ -40,6 +40,12 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::post('/rooms/{id}/book', [RoomController::class, 'book'])->name('rooms.book');
 
+Route::prefix('user')->name('user.')->group(function () {
+    Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+    Route::get('/rooms/{id}', [RoomController::class, 'show'])->name('rooms.show');
+    Route::get('/rooms/{id}/book', [RoomController::class, 'book'])->name('rooms.book');
+});
+
 
 
 Route::get('/clientBlog/search', [App\Http\Controllers\clientBlog::class, 'search'])->name('search');
