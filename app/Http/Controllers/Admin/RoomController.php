@@ -139,4 +139,5 @@ class RoomController extends Controller
         // إرسال البيانات إلى العرض
         return view('user.rooms.show', compact('room', 'selectedImage'));
     }
+    
 }
