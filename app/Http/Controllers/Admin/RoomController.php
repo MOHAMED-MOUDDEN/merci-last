@@ -22,46 +22,36 @@ class RoomController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'stars' => 'required|integer|min:1|max:5',
-            'price' => 'required|numeric|min:0',
-            'description' => 'nullable|string',
-            'additional_info' => 'nullable|string',
-            'images.*' => 'image|max:2048', // الصور يجب أن تكون أقل من 2 ميجابايت
-        ]);
+{
+    // إضافة تحقق للأخطاء
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'stars' => 'required|integer|min:1|max:5',
+        'price' => 'required|numeric|min:0',
+        'description' => 'nullable|string',
+        'additional_info' => 'nullable|string',
+        'available' => 'required|boolean',
+        'images.*' => 'nullable|image|max:2048',
+    ]);
 
-        // إنشاء الغرفة
-        $room = Room::create([
-            'name' => $validated['name'],
-            'stars' => $validated['stars'],
-            'price' => $validated['price'],
-            'description' => $validated['description'] ?? null,
-            'additional_info' => $validated['additional_info'] ?? null,
-        ]);
+    $room = Room::create([
+        'name' => $validated['name'],
+        'stars' => $validated['stars'],
+        'price' => $validated['price'],
+        'description' => $validated['description'] ?? null,
+        'additional_info' => $validated['additional_info'] ?? null,
+        'available' => $validated['available'],
+    ]);
 
-        // رفع الصور إلى Cloudinary إن وجدت
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                // رفع الصورة إلى Cloudinary
-                $uploadedImage = Cloudinary::upload($image->getRealPath(), [
-                    'folder' => 'room_images'
-                ]);
-
-                // الحصول على الرابط الآمن للصورة
-                $imageUrl = $uploadedImage->getSecurePath();
-
-                // تخزين رابط الصورة في قاعدة البيانات
-                RoomImage::create([
-                    'room_id' => $room->id,
-                    'image_path' => $imageUrl,
-                ]);
-            }
+    // رفع الصور إذا كانت موجودة
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $this->uploadRoomImage($room->id, $image);
         }
-
-        return redirect()->route('rooms.index')->with('success', 'Room created successfully.');
     }
+
+    return redirect()->route('rooms.index')->with('success', 'Room created successfully.');
+}
 
     public function edit($id)
     {
@@ -77,10 +67,10 @@ class RoomController extends Controller
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'additional_info' => 'nullable|string',
+            'available' => 'required|boolean',
             'images.*' => 'image|max:2048',
         ]);
 
-        // تحديث الغرفة
         $room = Room::findOrFail($id);
         $room->update([
             'name' => $validated['name'],
@@ -88,23 +78,26 @@ class RoomController extends Controller
             'price' => $validated['price'],
             'description' => $validated['description'] ?? null,
             'additional_info' => $validated['additional_info'] ?? null,
+            'available' => $validated['available'],
+
         ]);
 
-        // رفع الصور الجديدة إلى Cloudinary إن وجدت
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                // رفع الصورة إلى Cloudinary
-                $uploadedImage = Cloudinary::upload($image->getRealPath(), [
-                    'folder' => 'room_images'
-                ]);
+                try {
+                    $uploadedImage = Cloudinary::upload($image->getRealPath(), [
+                        'folder' => 'room_images',
+                    ]);
+                } catch (\Exception $e) {
+                    logger()->error('Cloudinary Upload Error: ' . $e->getMessage());
+                    return back()->withErrors('Error uploading image: ' . $e->getMessage());
+                }
+                
+                
 
-                // الحصول على الرابط الآمن للصورة
-                $imageUrl = $uploadedImage->getSecurePath();
-
-                // تخزين رابط الصورة في قاعدة البيانات
                 RoomImage::create([
                     'room_id' => $room->id,
-                    'image_path' => $imageUrl,
+                    'image_path' => $uploadedImage->getSecurePath(),
                 ]);
             }
         }
@@ -114,30 +107,24 @@ class RoomController extends Controller
 
     public function destroy($id)
     {
-        $room = Room::findOrFail($id);
+        $room = Room::with('images')->findOrFail($id);
 
-        // حذف الصور المرتبطة من Cloudinary
         foreach ($room->images as $image) {
             $publicId = basename($image->image_path, '.' . pathinfo($image->image_path, PATHINFO_EXTENSION));
-            Cloudinary::destroy($publicId); // حذف الصورة من Cloudinary
+            Cloudinary::destroy($publicId);
             $image->delete();
         }
 
-        // حذف الغرفة
         $room->delete();
 
         return redirect()->route('rooms.index')->with('success', 'Room deleted successfully.');
     }
+
     public function show($id)
     {
-        // الحصول على الغرفة مع الصور المرتبطة بها
         $room = Room::with('images')->findOrFail($id);
-        
-        // تحديد الصورة المختارة، يمكنك ضبط القيمة هنا أو تعيينها من جافا سكريبت
         $selectedImage = 0;
 
-        // إرسال البيانات إلى العرض
         return view('user.rooms.show', compact('room', 'selectedImage'));
     }
-    
 }

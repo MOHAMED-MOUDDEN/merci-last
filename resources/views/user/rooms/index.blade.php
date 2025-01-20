@@ -32,16 +32,26 @@
     <div class="card-container">
         @foreach($rooms as $room)
         <div class="card">
-            <img src="{{ asset($room->images->isNotEmpty() ? $room->images->first()->path : 'clientpage/images/default-room.jpg') }}" alt="{{ $room->nom }}">
+            <img src="{{ asset($room->images->first()->image_path ?? 'https://via.placeholder.com/400x300') }}" class="card-img-top rounded-top room-img" alt="{{ $room->name }}">
 
             <div class="card-info">
                 <h3>{{ $room->nom }}</h3>
                 <p>{{ $room->description }}</p>
                 <p class="price">Prix: {{ $room->prix }} MAD / Nuit</p>
                 <div class="stars">
-                    {!! str_repeat('★', $room->etoiles) !!}
-                    {!! str_repeat('☆', 5 - $room->etoiles) !!}
+                    {!! str_repeat('★', $room->stars) !!}
+                    {!! str_repeat('☆', 5 - $room->stars) !!}
                 </div>
+                @if(!$room->available)
+                <div class="position-absolute top-0 end-0 m-3 bg-danger text-white p-2 rounded">
+                    Indisponible
+                </div>
+            @else
+                <div class="position-absolute top-0 end-0 m-3 bg-success text-white p-2 rounded">
+                    Disponible
+                </div>
+            @endif
+            
                 <a href="{{ route('rooms.show', $room->id) }}" class="btn">Voir les Détails</a>
             </div>
         </div>

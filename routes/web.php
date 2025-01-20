@@ -38,6 +38,8 @@ use App\Http\Controllers\Admin\RoomController;
 
 use Illuminate\Support\Facades\Artisan;
 
+Route::resource('admin/rooms', RoomController::class);
+
 Route::post('/rooms/{id}/book', [RoomController::class, 'book'])->name('rooms.book');
 
 Route::prefix('user')->name('user.')->group(function () {

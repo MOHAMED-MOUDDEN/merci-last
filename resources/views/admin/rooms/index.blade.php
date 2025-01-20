@@ -13,6 +13,7 @@
                 <th>عدد النجوم</th>
                 <th>السعر</th>
                 <th>خيارات</th>
+                <th>status</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,7 @@
                 <td>{{ $room->name }}</td>
                 <td>{{ $room->stars }}</td>
                 <td>{{ $room->price }} درهم</td>
+                
                 <td>
                     <a href="{{ route('admin.rooms.edit', $room->id) }}" class="btn btn-warning btn-sm">تعديل</a>
                     <form action="{{ route('admin.rooms.destroy', $room->id) }}" method="POST" style="display:inline;">
@@ -29,6 +31,12 @@
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('هل أنت متأكد من حذف هذه الغرفة؟')">حذف</button>
                     </form>
+                </td>
+                <td>
+                    <select name="available" id="available" class="form-control">
+                        <option value="1">Disponible</option>
+                        <option value="0">Indisponible</option>
+                    </select>
                 </td>
             </tr>
             @endforeach

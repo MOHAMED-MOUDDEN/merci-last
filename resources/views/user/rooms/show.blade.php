@@ -2,21 +2,40 @@
 
 @section('content')
 <style>
-    .carousel-item img {
+    .carousel-inner img {
+        height: 600px;
         object-fit: cover;
-        object-position: center center;
+        object-position: center;
     }
-    .img-thumbnail.active {
-        border: 2px solid #007bff;
+
+    .thumbnail {
+        cursor: pointer;
+        border: 2px solid transparent;
+        padding: 2px;
+        margin: 5px;
+        transition: border-color 0.3s ease, transform 0.3s ease;
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    .thumbnail.active {
+        border-color: blue;
+        transform: scale(1.1);
+    }
+
+    .thumbnail + .thumbnail {
+        margin-left: 10px;
     }
 </style>
 
-<!-- Hero Section with Image Slider -->
+<!-- Carousel Section -->
 <div id="roomCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
     <div class="carousel-inner">
         @foreach($room->images as $index => $image)
         <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-            <img src="{{ asset($image->image_path) }}" class="d-block w-100 rounded img-fluid" style="height: 600px; object-fit: cover;" alt="Room Image">
+            <img src="{{ asset($image->image_path) }}" class="d-block w-100 rounded" alt="Room Image">
         </div>
         @endforeach
     </div>
@@ -30,86 +49,45 @@
     </button>
 </div>
 
-<!-- Thumbnail Images Below Slider -->
-<div class="d-flex justify-content-center gap-2 mb-5 thumbnails-container">
+<!-- Thumbnails Section -->
+<div class="d-flex justify-content-center">
     @foreach($room->images as $index => $image)
-    <img src="{{ asset($image->image_path) }}" onclick="selectSlide({{ $index }})" class="img-thumbnail {{ $index == 0 ? 'active' : '' }}" style="width: 100px; height: 80px; object-fit: cover; cursor: pointer;">
+    <img src="{{ asset($image->image_path) }}" class="thumbnail {{ $index == 0 ? 'active' : '' }}"
+         data-bs-slide-to="{{ $index }}" data-bs-target="#roomCarousel" alt="Thumbnail">
     @endforeach
 </div>
-
-<div class="container py-5">
-    <div class="container bg-white p-4 rounded shadow-sm">
-        <div class="row">
-            <div class="col-md-8">
-                <h2 class="font-weight-bold">{{ $room->name }}</h2>
-                <div class="mb-3">
-                    @for ($i = 0; $i < $room->stars; $i++)
-                        <i class="fas fa-star text-warning"></i>
-                    @endfor
-                </div>
-                <div class="card mb-4">
-                    <div class="card-header bg-light font-weight-bold">Description</div>
-                    <div class="card-body">
-                        <p>{{ $room->description }}</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header bg-light font-weight-bold">Services et Équipements</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6 mb-2">
-                                <i class="fas fa-wifi text-primary"></i> Wi-Fi gratuit
-                            </div>
-                            <div class="col-6 mb-2">
-                                <i class="fas fa-glass-martini-alt text-primary"></i> Minibar
-                            </div>
-                            <div class="col-6 mb-2">
-                                <i class="fas fa-lock text-primary"></i> Coffre-fort
-                            </div>
-                            <div class="col-6 mb-2">
-                                <i class="fas fa-phone text-primary"></i> Service en chambre 24/7
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body text-center">
-                        <h3 class="font-weight-bold">{{ $room->price }} MAD <small class="text-muted">/ nuit</small></h3>
-                        <p class="text-muted">Taxes et frais inclus</p>
-                        <a href="{{ route('rooms.reserve', $room->id) }}" class="btn btn-primary btn-block mb-3">Réserver maintenant</a>
-                        <ul class="list-unstyled text-start">
-                            <li><i class="fas fa-check text-success"></i> Annulation gratuite jusqu'à 24h avant l'arrivée</li>
-                            <li><i class="fas fa-check text-success"></i> Paiement sécurisé</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @section('scripts')
 <script>
-    function updateThumbnails(activeIndex) {
-        const thumbnails = document.querySelectorAll('.img-thumbnail');
-        thumbnails.forEach((thumbnail, index) => {
-            thumbnail.classList.toggle('active', index === activeIndex);
+    document.addEventListener('DOMContentLoaded', () => {
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const carousel = document.querySelector('#roomCarousel');
+
+        // Update active thumbnail when the carousel slides
+        carousel.addEventListener('slide.bs.carousel', (event) => {
+            // Log current slide for debugging
+            console.log('Switching to slide:', event.to);
+
+            // Remove 'active' class from all thumbnails
+            thumbnails.forEach((thumbnail) => thumbnail.classList.remove('active'));
+
+            // Add 'active' class to the thumbnail corresponding to the new slide
+            thumbnails[event.to].classList.add('active');
         });
-    }
 
-    document.getElementById('roomCarousel').addEventListener('slide.bs.carousel', function (event) {
-        updateThumbnails(event.to);
+        // Add click event to thumbnails to manually change the slide
+        thumbnails.forEach((thumbnail, index) => {
+            thumbnail.addEventListener('click', () => {
+                const carouselInstance = bootstrap.Carousel.getInstance(carousel);
+                carouselInstance.to(index); // Switch to the clicked slide
+            });
+        });
+
+        // Set the first thumbnail as active on load
+        if (thumbnails.length > 0) {
+            thumbnails[0].classList.add('active');
+        }
     });
-
-    function selectSlide(index) {
-        const carousel = document.getElementById('roomCarousel');
-        const carouselInstance = bootstrap.Carousel.getInstance(carousel);
-        carouselInstance.to(index);
-        updateThumbnails(index);
-    }
 </script>
 @endsection

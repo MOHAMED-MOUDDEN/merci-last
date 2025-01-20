@@ -36,6 +36,14 @@
             <label for="images">الصور</label>
             <input type="file" name="images[]" id="images" class="form-control" multiple>
         </div>
+        <div class="form-group">
+            <label for="available">الحالة</label>
+            <select name="available" id="available" class="form-control">
+                <option value="1" {{ $room->available ? 'selected' : '' }}>Disponible</option>
+                <option value="0" {{ !$room->available ? 'selected' : '' }}>Indisponible</option>
+            </select>
+        </div>
+        
 
         <button type="submit" class="btn btn-success">تحديث</button>
     </form>

@@ -4,6 +4,7 @@
 <div class="container">
     <h1>إضافة غرفة جديدة</h1>
     <form action="{{ route('admin.rooms.store') }}" method="POST" enctype="multipart/form-data">
+    
         @csrf
         <div class="form-group">
             <label for="name">اسم الغرفة</label>
@@ -33,6 +34,11 @@
         <div class="form-group">
             <label for="images">الصور</label>
             <input type="file" name="images[]" id="images" class="form-control" multiple>
+        </div>
+        
+        <div class="form-group">
+            <label for="available">الصور</label>
+            <input type="text" name="available" id="available" class="form-control" >
         </div>
 
         <button type="submit" class="btn btn-success">حفظ</button>

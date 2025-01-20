@@ -32,7 +32,7 @@ class AppartementController extends Controller
             'prix' => 'required|numeric|min:0',
             'etoiles' => 'nullable|integer|min:1|max:5',
             'extra_info' => 'nullable|string|max:255',
-'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240', // يزيد الحد إلى 10 ميجابايت
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240', // يزيد الحد إلى 10 ميجابايت
         ]);
 
         $imagePath = $this->uploadImage($request, 'images/brunches');
@@ -127,17 +127,26 @@ class AppartementController extends Controller
 
     // تحميل الصورة وتخزينها في مجلد التخزين المناسب
    // تحميل الصورة وتخزينها في مجلد التخزين المناسب
-public function uploadImage(Request $request, $folder)
-{
-    if ($request->hasFile('image')) {
-        $user_img = $request->file('image');
-        $image_url = Cloudinary::upload($user_img->getRealPath(), [
-            'folder' => $folder
-        ])->getSecurePath();
-
-        return $image_url; // إعادة الرابط ليتم تخزينه في قاعدة البيانات
-    }
-    return null; // في حال لم يتم رفع صورة
-}
+   public function uploadImage(Request $request, $folder)
+   {
+       if ($request->hasFile('image')) {
+           $user_img = $request->file('image');
+           
+           $image_url = Cloudinary::upload($user_img->getRealPath(), [
+               'folder' => $folder,
+               'use_filename' => true,
+               'unique_filename' => false,
+               'overwrite' => true,
+               'http_client' => [
+                   'verify' => false,  // Disable SSL verification
+               ]
+           ])->getSecurePath();
+   
+           return $image_url;
+       }
+   
+       return null;
+   }
+   
 
 }
