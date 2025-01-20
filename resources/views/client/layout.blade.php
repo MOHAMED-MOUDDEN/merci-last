@@ -13,36 +13,36 @@
 </div>
 <div id="dropDownSelect1"></div>
 <!--===============================================================================================-->
-<script type="text/javascript" src="{{ secure_asset('clientpage/vendor/jquery/jquery-3.2.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/vendor/jquery/jquery-3.2.1.min.js') }}"></script>
 <!--===============================================================================================-->
-<script type="text/javascript" src="{{ secure_asset('clientpage/vendor/animsition/js/animsition.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/vendor/animsition/js/animsition.min.js') }}"></script>
 <!--===============================================================================================-->
-<script type="text/javascript" src="{{ secure_asset('clientpage/vendor/bootstrap/js/popper.js') }}"></script>
-<script type="text/javascript" src="{{ secure_asset('clientpage/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/vendor/bootstrap/js/popper.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <!--===============================================================================================-->
-<script type="text/javascript" src="{{ secure_asset('clientpage/vendor/select2/select2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/vendor/select2/select2.min.js') }}"></script>
 <!--===============================================================================================-->
-<script type="text/javascript" src="{{ secure_asset('clientpage/vendor/daterangepicker/moment.min.js') }}"></script>
-<script type="text/javascript" src="{{ secure_asset('clientpage/vendor/daterangepicker/daterangepicker.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/vendor/daterangepicker/moment.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/vendor/daterangepicker/daterangepicker.js') }}"></script>
 <!--===============================================================================================-->
-<script type="text/javascript" src="{{ secure_asset('clientpage/vendor/slick/slick.min.js') }}"></script>
-<script type="text/javascript" src="{{ secure_asset('clientpage/js/slick-custom.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/vendor/slick/slick.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/js/slick-custom.js') }}"></script>
 <!--===============================================================================================-->
-<script type="text/javascript" src="{{ secure_asset('clientpage/vendor/parallax100/parallax100.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/vendor/parallax100/parallax100.js') }}"></script>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function () {
         $('.parallax100').parallax100();
     });
 </script>
 <!--===============================================================================================-->
-<script type="text/javascript" src="{{ secure_asset('clientpage/vendor/countdowntime/countdowntime.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/vendor/countdowntime/countdowntime.js') }}"></script>
 <!--===============================================================================================-->
-<script type="text/javascript" src="{{ secure_asset('clientpage/vendor/lightbox2/js/lightbox.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('clientpage/vendor/lightbox2/js/lightbox.min.js') }}"></script>
 <!--===============================================================================================-->
 <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}"></script>
-<script src="{{ secure_asset('clientpage/js/map-custom.js') }}"></script>
+<script src="{{ asset('clientpage/js/map-custom.js') }}"></script>
 <!--===============================================================================================-->
-<script src="{{ secure_asset('clientpage/js/main.js') }}"></script>
+<script src="{{ asset('clientpage/js/main.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
 </script>

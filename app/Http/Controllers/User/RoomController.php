@@ -33,11 +33,17 @@ class RoomController extends Controller
     }
     public function book($id)
     {
-        // هنا يمكنك إضافة المنطق لحجز الغرفة، مثل إضافة الحجز إلى قاعدة البيانات
+        // جلب الغرفة بناءً على الـ ID
         $room = Room::findOrFail($id);
-        
-        // افتراضًا أن الحجز تم بنجاح
-        return redirect()->route('rooms.show', $id)->with('success', 'Room booked successfully!');
+
+        // حساب الثمن (على سبيل المثال، نستخدم السعر الموجود في خاصية price)
+        $total = $room->price;
+
+        // إذا كنت بحاجة إلى إجراء أي تعديلات أخرى على الثمن، يمكنك إضافتها هنا
+
+        // التوجيه إلى الصفحة السابقة مع عرض الثمن في الجلسة
+        return redirect()->route('rooms.show', $id)->with('success', 'Room booked successfully!')->with('total', $total);
     }
-        
+
+
 }

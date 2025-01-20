@@ -35,12 +35,14 @@ class RoomReservationController extends Controller
     return redirect()->route('rooms.index')->with('success', 'تم حجز الغرفة بنجاح!');
 }
 
-    public function create($id)
-    {
-        // جلب بيانات الغرفة باستخدام معرّف الغرفة
-        $room = \App\Models\Room::findOrFail($id);
+  
+public function create($id)
+{
+    // جلب بيانات الغرفة باستخدام معرّف الغرفة
+    $room = \App\Models\Room::findOrFail($id);
 
-        // عرض صفحة الحجز مع بيانات الغرفة
-        return view('user.rooms.reserve', compact('room'));
-    }
+    // عرض صفحة الحجز مع بيانات الغرفة
+    return view('user.rooms.reserve', compact('room'));
+}
+
 }
